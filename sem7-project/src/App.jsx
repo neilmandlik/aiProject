@@ -2,11 +2,14 @@ import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider } 
 import { Provider } from 'react-redux'
 import TestComponent, { testLoader } from './pages/TestComponent';
 import store from './store/store';
+import Layout from './component/Layout';
+import AccrediatationPDFs from './pages/AccreditationPDFs';
 function App() {
 
   const router = createBrowserRouter(createRoutesFromElements(
-    <Route path='/' element={<TestComponent />} loader={testLoader} >
-      <Route path='syllabus-review' element={<SyllabusReview />} />
+    <Route path='/' element={<Layout />}>
+      {/* <Route index element={<TestComponent />} loader={testLoader}></Route> */}
+      <Route index element={<AccrediatationPDFs />} />
     </Route>
   ))
 
