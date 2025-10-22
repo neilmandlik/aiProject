@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import testReducer from './test/testSlice'
+import accreditationReducer from './accreditation/accSlice'
 
 const store = configureStore({
     reducer: {
-        test: testReducer
+        test: testReducer,
+        accreditation: accreditationReducer,
     },
 })
 
