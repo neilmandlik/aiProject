@@ -1,4 +1,4 @@
-import { accrediationFileDataService } from "../../services/accrediationService"
+import { accrediationFileDataService } from "../../services/allServices"
 
 export const getAccrediationFileData = async() => {
     return await accrediationFileDataService()

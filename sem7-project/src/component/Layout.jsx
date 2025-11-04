@@ -21,6 +21,7 @@ function Layout(){
     const navigate = useNavigate();
     const stepNo = useRef(0);
     const accSlice = useSelector(state=>state.accreditation);
+    const performanceSlice = useSelector(state=>state.performance);
 
     const handleClick = (direction) => {
         if(!!direction){
@@ -60,9 +61,9 @@ function Layout(){
                 )}               
             </div>
 
-            {accSlice.loading?
-                <div class="flex justify-center pt-40">
-                    <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            {accSlice.loading || performanceSlice.loading?
+                <div className="flex justify-center pt-40">
+                    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
             :
             <Outlet />

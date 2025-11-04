@@ -5,7 +5,7 @@ import store from './store/store';
 import Layout from './component/Layout';
 import AccrediatationPDFs, {accreditationLoader} from './pages/AccreditationPDFs';
 import SyllabusStructure from './pages/SyllabusStructure';
-import PerformanceHistory from './pages/PerformanceHistory';
+import PerformanceHistory, {performanceLoader} from './pages/PerformanceHistory';
 function App() {
 
   const router = createBrowserRouter(createRoutesFromElements(
@@ -13,7 +13,7 @@ function App() {
       {/* <Route index element={<TestComponent />} loader={testLoader}></Route> */}
       <Route index element={<AccrediatationPDFs />} loader={accreditationLoader} />
       <Route path='syllabus-pdf' element={<SyllabusStructure />} />
-      <Route path='performance-history' element={<PerformanceHistory />} />
+      <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader} />
     </Route>
   ))
 

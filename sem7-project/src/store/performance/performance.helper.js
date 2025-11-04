@@ -1,0 +1,24 @@
+import { performanceDataService } from "../../services/allServices"
+
+export const getPerformanceData = async() => {
+    return await performanceDataService()
+}
+
+export const handlePerformanceExtraReducers = (builder,getThunk) =>{
+    builder
+    .addCase(getThunk.pending ,(state)=>{
+        state.loading = true
+    })
+    .addCase(getThunk.fulfilled ,(state,action)=>{
+        state.performanceRecords = action.payload.map(item=>({
+            reviewName: item.reviewName,
+            reviewData: item.reviewData,
+            isReviewVisible: false
+        }))
+        state.loading = false
+    })
+    .addCase(getThunk.rejected ,(state)=>{
+        state.errMsg = "Error Occured"
+        state.loading = false
+    })
+}
