@@ -3,6 +3,11 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import store from "../store/store"
 import ReviewDetails from "./ReviewDetails"
 import { useDispatch, useSelector } from "react-redux"
+import { button } from "../component/ApplicationCSS"
+import {ArrowLeft} from 'lucide-react'
+import { useEffect } from "react"
+import { setIsOnPerformanceHistory } from "../store/progress/progressSlice"
+import { useNavigate } from "react-router-dom"
 
 export const performanceLoader = async() => {
     await store.dispatch(getPerformanceThunk())
@@ -11,16 +16,34 @@ export const performanceLoader = async() => {
 
 function PerformanceHistory(){
 
+    
+    const progressSlice = useSelector((state)=>state.progress)
     const performanceHistory = useSelector(state=>state.performance.performanceRecords)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    
+    useEffect(()=>{
+        dispatch(setIsOnPerformanceHistory(true))
+    },[])
 
     const handleReviewVisibility = (index) => {
         dispatch(toggleReviewVisibility(index))
+    }
 
+    const handleOnNewSummaryClick = () => {
+        navigate('../accreditation-pdf',{relative: 'path'})
     }
 
     return (
         <>
+            <div>
+                <button 
+                onClick={()=>handleOnNewSummaryClick()}
+                className={`${button} flex items-center gap-2 m-3`}>
+                    <ArrowLeft className="w-5 h-5" />
+                    Generate New Summary
+                </button>
+            </div>
             <div className="flex flex-col gap-4 mt-6">
                 {
                     performanceHistory.map((item, index) => (

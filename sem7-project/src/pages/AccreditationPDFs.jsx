@@ -2,15 +2,24 @@ import { useLoaderData } from 'react-router-dom';
 import { getAccrediationThunk } from '../store/accreditation/accSlice';
 import store from '../store/store';
 import { Eye, Trash2, MoreHorizontal, Plus } from 'lucide-react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsOnPerformanceHistory } from '../store/progress/progressSlice';
 export const accreditationLoader = async() => {
     await store.dispatch(getAccrediationThunk())
     return store.getState().accreditation.fileNames
 
 }
 
-function AccrediatationPDFs(){
 
+function AccrediatationPDFs(){
+    
+    const dispatch = useDispatch()
     const data = useLoaderData()
+
+    useEffect(()=>{
+        dispatch(setIsOnPerformanceHistory(false))        
+    })
     
     return(
         <>

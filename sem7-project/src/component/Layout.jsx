@@ -1,64 +1,83 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UserCircle2 } from "lucide-react";
+import { decrement, increment } from "../store/progress/progressSlice";
+import { button } from "./ApplicationCSS";
 function Layout(){
-
-    const navList = [
-        {
+    
+    const navObj = {
+        1: {
             name: "Accreditation PDFs",
-            to: "."
+            to: "accreditation-pdf"
         },
-        {
+        
+        2: {
             name: "Syllabus Structure PDF",
-            to: "syllabus-pdf"
+            to: "syllabus-pdf",
         },
-        {
-            name: "Peformance History",
-            to: "performance-history"
+        
+        3: {
+            name: "Peformance Summary",
+            to: "performance-summary",
         },
-    ]
+    }
 
+    
     const navigate = useNavigate();
-    const stepNo = useRef(0);
     const accSlice = useSelector(state=>state.accreditation);
     const performanceSlice = useSelector(state=>state.performance);
+    const progressSlice = useSelector(state=>state.progress)
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        if(!progressSlice.isOnPerformanceHistory){
+            navigate(navObj[progressSlice.step].to)
+        }
+    },[progressSlice.step])
 
     const handleClick = (direction) => {
-        if(!!direction){
-            stepNo.current++;
-        }
-        else if(!!!direction){
-            stepNo.current--;
-        }    
-        
-        if(stepNo.current < 0){
-            stepNo.current = 0;
-        }
-        else if(stepNo.current >= navList.length){
-            stepNo.current = navList.length - 1;
+        if(direction){
+            dispatch(increment())
         }
         else{
-            navigate(navList[stepNo.current].to);
-        }
-        
+            dispatch(decrement())
+        }          
     }
 
     return (
         <>
-            <div className="flex items-center gap-4 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 px-6 py-3 shadow-md">
-                {navList.map((navItem, index) => 
+            <div className="flex items-center justify-between bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 px-6 py-3 shadow-md">
+      
+                {/* Left side - Navigation Links */}
+                <div className="flex items-center gap-4">
+                    {Object.keys(navObj).map((navItem, index) => (
+                    <div
+                        key={navItem}
+                        className={
+                        `px-3 py-2 rounded-md text-sm font-medium transition ${
+                            (progressSlice.step == navItem) && !progressSlice.isOnPerformanceHistory
+                            ? "bg-indigo-600 text-white shadow-md"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                        }`}
+                    >
+                        {navObj[navItem].name}
+                    </div>
+                    ))}
+                </div>
+
+                {/* Right side - Profile Button */}
+                <div className="flex items-center gap-7 px-4 py-2 rounded-md">                
                     <NavLink 
-                        key={index}
-                        end={index===0}
-                        className={({ isActive }) =>
-                            `px-3 py-2 rounded-md text-sm font-medium transition ${
-                            isActive
-                                ? "bg-indigo-600 text-white shadow-md" // Active link highlight
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                            }`}
-                        to = {navItem.to}>{navItem.name}
+                        to={`performance-history`} 
+                        className={`border border-white px-4 py-2 rounded-md hover:bg-indigo-500 hover:border-transparent text-white font-medium shadow-md transition ${progressSlice.isOnPerformanceHistory?"bg-indigo-500 border-transparent":""}`}>
+                        Performance History
                     </NavLink>
-                )}               
+                    <button className="text-white shadow-md transition">
+                        <UserCircle2 size={30} />
+                    </button>
+                </div>
+
             </div>
 
             {accSlice.loading || performanceSlice.loading?
@@ -73,7 +92,7 @@ function Layout(){
 
                 {/* Back Button */}
                 <button 
-                    className="px-5 py-2 border border-indigo-500 text-indigo-600 hover:bg-indigo-50 font-medium rounded-lg transition shadow-sm"
+                    className={`${button}`}
                     onClick={()=>handleClick(0)}
                 >
                     Back
@@ -81,8 +100,8 @@ function Layout(){
 
                 {/* Next Button */}
                 <button 
-                    className="px-5 py-2 border border-indigo-500 text-indigo-600 hover:bg-indigo-50 font-medium rounded-lg transition shadow-sm"
-                    onClick={()=>handleClick(1)}
+                    className={`${button}`}                    
+                    onClick={()=>handleClick(1,)}
                 >
                     Next
                 </button>

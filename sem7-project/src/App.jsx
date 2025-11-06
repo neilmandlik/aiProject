@@ -6,14 +6,16 @@ import Layout from './component/Layout';
 import AccrediatationPDFs, {accreditationLoader} from './pages/AccreditationPDFs';
 import SyllabusStructure from './pages/SyllabusStructure';
 import PerformanceHistory, {performanceLoader} from './pages/PerformanceHistory';
+import PerformanceSummary from './pages/PerformanceSummary';
 function App() {
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<Layout />}>
       {/* <Route index element={<TestComponent />} loader={testLoader}></Route> */}
-      <Route index element={<AccrediatationPDFs />} loader={accreditationLoader} />
+      <Route path='accreditation-pdf' element={<AccrediatationPDFs />} loader={accreditationLoader} />
       <Route path='syllabus-pdf' element={<SyllabusStructure />} />
-      <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader} />
+      <Route path='performance-summary' element={<PerformanceSummary />} />
+      <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader}/>
     </Route>
   ))
 
