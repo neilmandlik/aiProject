@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import os
 import gradio as gr
 import pdfplumber
+from databaseConnection import engine
+from sqlalchemy import text
 
 system_prompt = "You are a selective summarizer. Your job is to go through a PDF and just extract the parts which say something about syllabus or curriculum of a university"
 system_prompt = "Provide a detailed (around 250 to 300 words) summary in bullet points."
@@ -10,11 +12,11 @@ system_prompt = "Provide a detailed (around 250 to 300 words) summary in bullet 
 
 
 load_dotenv(override = True)
-open_api_key = os.getenv("OPENAI_API_KEY")
-if open_api_key:
-    print("Ready to go")
-else:
-    print("Failed")
+# open_api_key = os.getenv("OPENAI_API_KEY")
+# if open_api_key:
+#     print("Ready to go")
+# else:
+#     print("Failed")
 
 
 openai = OpenAI()
@@ -38,7 +40,18 @@ def summarize_text(file_path):
     )
     return response.choices[0].message.content
 
-print(summarize_text(file_path))
+# print(summarize_text(file_path))
+
+def verify_db_connection():
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        print("✅ Database connection successful!")
+    except Exception as e:
+        print("❌ Database connection failed:", e)
+
+verify_db_connection()
+
 
 
 
