@@ -18,7 +18,7 @@ function PerformanceHistory(){
 
     
     const progressSlice = useSelector((state)=>state.progress)
-    const performanceHistory = useSelector(state=>state.performance.performanceRecords)
+    const performanceSlice = useSelector(state=>state.performance)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     
@@ -46,7 +46,9 @@ function PerformanceHistory(){
             </div>
             <div className="flex flex-col gap-4 mt-6">
                 {
-                    performanceHistory.map((item, index) => (
+                    performanceSlice.errMsg
+                    ?<p>{performanceSlice.errMsg}</p>
+                    :performanceSlice.performanceRecords.map((item, index) => (
                         <>
                             <div className="w-full rounded-xl bg-gray-100 shadow-sm transition hover:shadow-md">
                                 

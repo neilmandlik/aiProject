@@ -9,4 +9,3 @@ class AccreditationSummary(Base):
     acc_summary = Column(Text)
     acc_id = Column(Integer, ForeignKey("accreditation_details.acc_id"))
 
-    details = relationship("AccreditationDetails", back_populates="summaries")

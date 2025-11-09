@@ -13,8 +13,8 @@ export const handleAccrediationExtraReducers = (builder,getThunk) =>{
         state.fileNames = action.payload
         state.loading = false
     })
-    .addCase(getThunk.rejected ,(state)=>{
-        state.errMsg = "Error Occured"
+    .addCase(getThunk.rejected ,(state,action)=>{
+        state.errMsg = action.error.message
         state.loading = false
     })
 }

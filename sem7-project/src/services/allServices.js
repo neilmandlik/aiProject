@@ -7,7 +7,7 @@ export const accrediationFileDataService = async() => {
 }
 
 export const performanceHistoryService = async() => {
-    return await getData('review-names')
+    return await getData('performance-review-names')
 }
 
 export const performanceDataService = async() => {

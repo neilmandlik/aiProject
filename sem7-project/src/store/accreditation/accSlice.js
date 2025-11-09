@@ -3,7 +3,7 @@ import { getAccrediationFileData, handleAccrediationExtraReducers } from "./accS
 const initialState = {
     fileNames: [],
     loading: false,
-    errMsg: ""
+    errMsg: ''
 }
 
 export const getAccrediationThunk = createAsyncThunk("api/getAccreditationFiles", getAccrediationFileData)

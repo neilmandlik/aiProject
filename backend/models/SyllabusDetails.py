@@ -7,5 +7,3 @@ class SyllabusDetails(Base):
 
     syll_id = Column(Integer, primary_key=True)
     syll_filename = Column(String(100))
-
-    performance = relationship("PerformanceDetails", back_populates="syllabus")

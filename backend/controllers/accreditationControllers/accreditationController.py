@@ -1,3 +1,13 @@
 from flask import jsonify
+from controllers.accreditationControllers.accreditationHelper import get_latest_accreditation
+
+
 def accreditationFileNameController():
-    return jsonify({"message": "Hi"})
+    acc = get_latest_accreditation()
+    if acc:
+        return jsonify({
+            "acc_id": acc.acc_id,
+            "acc_filename": acc.acc_filename
+        })
+    else:
+        return jsonify({"message": "No performance data found"}),404

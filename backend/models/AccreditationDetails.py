@@ -7,7 +7,3 @@ class AccreditationDetails(Base):
 
     acc_id = Column(Integer, primary_key=True)
     acc_filename = Column(String(100))
-
-    # One-to-many
-    summaries = relationship("AccreditationSummary", back_populates="details")
-    rubrics = relationship("AccreditationRubrics", back_populates="details")

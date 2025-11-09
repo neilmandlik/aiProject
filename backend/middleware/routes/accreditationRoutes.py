@@ -1,6 +1,6 @@
-from flask import Blueprint,jsonify
+from flask import Blueprint
 from controllers.accreditationControllers.accreditationController import accreditationFileNameController
 
-test_route_bp = Blueprint("test",__name__)
+accreditation_route_bp = Blueprint("accreditation",__name__)
 
-test_route_bp.route("/accreditation-file-names",methods = ['GET'])(accreditationFileNameController)
+accreditation_route_bp.route("/accreditation-file-names",methods = ['GET'])(accreditationFileNameController)

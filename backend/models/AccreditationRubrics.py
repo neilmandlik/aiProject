@@ -10,7 +10,3 @@ class AccreditationRubrics(Base):
     acc_rubric = Column(String(100))
     acc_rub_description = Column(String(300))
 
-    details = relationship("AccreditationDetails", back_populates="rubrics")
-
-    # reverse link for performance_score
-    scores = relationship("PerformanceScore", back_populates="rubric")
