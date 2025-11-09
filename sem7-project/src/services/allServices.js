@@ -1,12 +1,15 @@
 import data from '../assets/accPdfAPI.json' //Later will be changed with the actual path
 import performanceData from '../assets/performanceAPI.json' //Later will be changed with the actual path
+import { getData } from '../CRUDOps';
 
 export const accrediationFileDataService = async() => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return data;
+    return await getData(`accreditation-file-names`)
+}
+
+export const performanceHistoryService = async() => {
+    return await getData('review-names')
 }
 
 export const performanceDataService = async() => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return performanceData;
+    return await getData(`review-report`)
 }

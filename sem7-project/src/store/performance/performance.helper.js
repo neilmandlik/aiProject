@@ -1,7 +1,7 @@
-import { performanceDataService } from "../../services/allServices"
+import { performanceHistoryService } from "../../services/allServices"
 
 export const getPerformanceData = async() => {
-    return await performanceDataService()
+    return await performanceHistoryService()
 }
 
 export const handlePerformanceExtraReducers = (builder,getThunk) =>{
