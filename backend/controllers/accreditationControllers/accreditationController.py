@@ -10,4 +10,4 @@ def accreditationFileNameController():
             "acc_filename": acc.acc_filename
         })
     else:
-        return jsonify({"message": "No performance data found"}),404
+        return jsonify({"message": "No accreditation files found"}),404

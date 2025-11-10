@@ -18,7 +18,7 @@ export const accreditationLoader = async() => {
 function AccrediatationPDFs(){
     
     const dispatch = useDispatch()
-    const data = useLoaderData()
+    const accreditationSlice = useSelector((state)=>state.accreditation)
 
     useEffect(()=>{
         dispatch(setIsOnPerformanceHistory(false))        
@@ -33,9 +33,9 @@ function AccrediatationPDFs(){
                     </button>
                 </div>
 
-                {data.isError
-                ?<p>{data.error}</p>
-                :data.map((fileObj, index) => (
+                {accreditationSlice.errMsg
+                ?<p>{accreditationSlice.errMsg}</p>
+                :accreditationSlice.fileNames.map((fileObj, index) => (
                     <div className='bg-gradient-to-r from-gray-100 to-gray-200 shadow-md rounded-lg p-5 flex justify-between items-center hover:shadow-xl transition' key={index}>
                         <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
 

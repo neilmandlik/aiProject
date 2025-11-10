@@ -1,16 +1,17 @@
-import { accrediationFileDataService } from "../../services/allServices"
+import { syllabusFileNamesService } from "../../services/allServices"
 
-export const getAccrediationFileData = async() => {
-    return await accrediationFileDataService()
+
+export const getSyllabusFileNames = async() => {
+    return await syllabusFileNamesService()
 }
 
-export const handleAccrediationExtraReducers = (builder,getThunk) =>{
+export const handleSyllabusExtraReducers = (builder,getThunk) =>{
     builder
     .addCase(getThunk.pending ,(state)=>{
         state.loading = true
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.fileNames = action.payload
+        state.syllabusFile = action.payload
         state.loading = false
         state.errMsg = ""
     })

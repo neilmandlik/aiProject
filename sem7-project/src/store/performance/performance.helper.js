@@ -16,6 +16,7 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
             isReviewVisible: false
         }))
         state.loading = false
+        state.errMsg = ""
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message

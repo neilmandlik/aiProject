@@ -13,3 +13,7 @@ export const performanceHistoryService = async() => {
 export const performanceDataService = async() => {
     return await getData(`review-report`)
 }
+
+export const syllabusFileNamesService = async() => {
+    return await getData(`syllabus-file-name`)
+}
