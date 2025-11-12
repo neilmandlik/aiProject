@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { getSyllabusFileNameThunk } from "../store/syllabus/syllabusSlice"
 import store from "../store/store"
 import { Plus, Eye, Trash2, MoreHorizontal } from "lucide-react"
-import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const syllabusLoader = async() => {
     await store.dispatch(getSyllabusFileNameThunk())
@@ -11,16 +11,21 @@ export const syllabusLoader = async() => {
 function SyllabusPDFs() {
 
     const syllabusSlice = useSelector((state)=>state.syllabus)
+    const navigate = useNavigate()
 
-    useEffect(()=>{
-        console.log(syllabusSlice)
-    },[])
+    const handleAddSyllabusFile = () => {
+        navigate('/add-file')
+    }
+
 
     return(
         <>
             <div className="flex flex-col gap-4 p-2">
                 <div className='flex justify-end'>
-                    <button className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition'>
+                    <button 
+                        className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition'
+                        onClick={()=>handleAddSyllabusFile()}
+                    >
                         <Plus className="w-5 h-5" />                        
                         Add Syllabus PDF File
                     </button>

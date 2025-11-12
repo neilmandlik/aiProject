@@ -4,6 +4,7 @@ import accreditationReducer from './accreditation/accSlice'
 import performanceReducer from './performance/performanceSlice'
 import progressReducer from './progress/progressSlice'
 import syllabusReducer from './syllabus/syllabusSlice'
+import fileReducer from './file/fileSlice'
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         performance: performanceReducer,
         progress: progressReducer,
         syllabus: syllabusReducer,
+        file: fileReducer,
     },
 })
 

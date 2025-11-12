@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { getAccrediationThunk } from '../store/accreditation/accSlice';
 import store from '../store/store';
 import { Eye, Trash2, MoreHorizontal, Plus } from 'lucide-react';
@@ -19,15 +19,24 @@ function AccrediatationPDFs(){
     
     const dispatch = useDispatch()
     const accreditationSlice = useSelector((state)=>state.accreditation)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         dispatch(setIsOnPerformanceHistory(false))        
-    })
+    },[])
+
+    const handleAddAccreditationFile = () => {
+        navigate('/add-file')        
+    }
+
     return(
         <>
             <div className="flex flex-col gap-4 p-2">
                 <div className='flex justify-end'>
-                    <button className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition'>
+                    <button 
+                        className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition'
+                        onClick={()=>handleAddAccreditationFile()}
+                    >
                         <Plus className="w-5 h-5" />                        
                         Add Accreditation PDF File
                     </button>

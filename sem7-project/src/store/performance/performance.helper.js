@@ -10,8 +10,8 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
         state.loading = true
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.performanceRecords = action.payload.map(item=>({
-            reviewName: item.reviewName,
+        state.performanceRecords = action.payload.performances.map(item=>({
+            reviewName: item.performance_name,
             reviewData: item.reviewData,
             isReviewVisible: false
         }))

@@ -18,7 +18,9 @@ const progressSlice = createSlice({
             state.step = state.step===state.minSteps?state.minSteps:state.step-1
         },
         setIsOnPerformanceHistory: (state,action) => {
-            state.step = state.minSteps
+            if(action.payload){
+                state.step=state.minSteps
+            }
             state.isOnPerformanceHistory = action.payload
         }
     },
