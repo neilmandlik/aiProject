@@ -22,7 +22,7 @@ function AddFile(){
             alert(`File upload error: ${fileSlice.errMsg}`);
         }
         else{
-            return;
+            navigate(`${progressSlice.step===1?'/accreditation-pdf':'/syllabus-pdf'}`);
         }
         setHasClicked(false);
     },[fileSlice]);
