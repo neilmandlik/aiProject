@@ -38,8 +38,6 @@ export const postFile = async (route, file, extraFields = {}) => {
       formData.append(key, value);
     }
 
-    console.log(formData)
-
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}${route}`, {
       method: "POST",
       body: formData,

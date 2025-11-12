@@ -1,14 +1,9 @@
 import { useSelector } from "react-redux";
 import CircularProgress from "./ProgressIndicator";
-import { useEffect } from "react";
 
 const ReviewDetails = ({ index }) => {
 
     const reviewData = useSelector(state=>state.performance.performanceRecords[index].reviewData);
-
-    useEffect(()=>{
-        console.log("Review Data:", !reviewData);
-    },[])
 
     if(Object.entries(reviewData).length === 0){
         return <p>No records available.. </p>

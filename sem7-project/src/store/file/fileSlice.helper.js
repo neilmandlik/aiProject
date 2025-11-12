@@ -13,13 +13,11 @@ export const handleFileExtraReducers = (builder,getThunk) =>{
         state.loading = true
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        console.log("File uploaded successfully:", action.payload);
         state.loading = false
         state.errMsg = ""
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message
-        console.log("File upload error: ", state.errMsg);
         state.loading = false
     })
 }
