@@ -42,33 +42,30 @@ function AccrediatationPDFs(){
                     </button>
                 </div>
 
-                {accreditationSlice.errMsg
-                ?<p>{accreditationSlice.errMsg}</p>
-                :accreditationSlice.fileNames.map((fileObj, index) => (
-                    <div className='bg-gradient-to-r from-gray-100 to-gray-200 shadow-md rounded-lg p-5 flex justify-between items-center hover:shadow-xl transition' key={index}>
-                        <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
+                <div className="h-[70dvh] overflow-y-auto p-2 space-y-3">  
+                    {accreditationSlice.errMsg
+                        ? <p>{accreditationSlice.errMsg}</p>
+                        : accreditationSlice.fileNames.map((fileObj, index) => (
+                            <div className='bg-gradient-to-r from-gray-100 to-gray-200 shadow-md rounded-lg p-5 flex justify-between items-center hover:shadow-xl transition' key={index}>
+                                <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
 
-                        <div className='flex gap-3'>
-                            <button
-                                className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full"
-                            >
-                                <Eye className="w-5 h-5 text-blue-600" />
-                            </button>
+                                <div className='flex gap-3'>
+                                    <button className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full">
+                                        <Eye className="w-5 h-5 text-blue-600" />
+                                    </button>
 
-                            <button
-                                className="p-2 bg-red-100 hover:bg-red-200 rounded-full"
-                            >
-                                <Trash2 className="w-5 h-5 text-red-600" />
-                            </button>
+                                    <button className="p-2 bg-red-100 hover:bg-red-200 rounded-full">
+                                        <Trash2 className="w-5 h-5 text-red-600" />
+                                    </button>
 
-                            <button
-                                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full"
-                            >
-                                <MoreHorizontal className="w-5 h-5 text-gray-600" />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                                    <button className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full">
+                                        <MoreHorizontal className="w-5 h-5 text-gray-600" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         </>
     )

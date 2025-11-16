@@ -48,29 +48,32 @@ function PerformanceHistory(){
                 {
                     performanceSlice.errMsg
                     ?<p>{performanceSlice.errMsg}</p>
-                    :performanceSlice.performanceRecords.map((item, index) => (
-                        <>
-                            <div className="w-full rounded-xl bg-gray-100 shadow-sm transition hover:shadow-md">
-                                
-                                <div
-                                    onClick={()=>handleReviewVisibility(index)}
-                                    className="flex items-center justify-between px-6 py-4 cursor-pointer"
-                                >
-                                    <span className="text-gray-700 font-medium text-lg">{item.reviewName}</span>
-                                    {item.isReviewVisible ? (
-                                    <ChevronUp className="text-gray-500" size={22} />
-                                    ) : (
-                                    <ChevronDown className="text-gray-500" size={22} />
+                    :
+                    <div className="h-[70dvh] overflow-y-auto p-2 space-y-3">  
+                        {performanceSlice.performanceRecords.map((item, index) => (
+                            <>
+                                <div className="w-full rounded-xl bg-gray-100 shadow-sm transition hover:shadow-md">
+                                    
+                                    <div
+                                        onClick={()=>handleReviewVisibility(index)}
+                                        className="flex items-center justify-between px-6 py-4 cursor-pointer"
+                                    >
+                                        <span className="text-gray-700 font-medium text-lg">{item.reviewName}</span>
+                                        {item.isReviewVisible ? (
+                                        <ChevronUp className="text-gray-500" size={22} />
+                                        ) : (
+                                        <ChevronDown className="text-gray-500" size={22} />
+                                        )}
+                                    </div>
+
+                                    {/* Optional expandable content */}
+                                    {item.isReviewVisible && (
+                                        <ReviewDetails index={index} />                                     
                                     )}
                                 </div>
-
-                                {/* Optional expandable content */}
-                                {item.isReviewVisible && (
-                                    <ReviewDetails index={index} />                                     
-                                )}
-                            </div>
-                        </>
-                    ))
+                            </>
+                        ))}
+                    </div>
                 }
             </div>
         </>
