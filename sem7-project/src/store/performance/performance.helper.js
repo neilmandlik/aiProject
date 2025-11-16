@@ -8,6 +8,7 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
     builder
     .addCase(getThunk.pending ,(state)=>{
         state.loading = true
+        state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.performanceRecords = action.payload.performances.map(item=>({

@@ -7,3 +7,4 @@ class AccreditationDetails(Base):
 
     acc_id = Column(Integer, primary_key=True)
     acc_filename = Column(String(100))
+    acc_body_name = Column(String(15))

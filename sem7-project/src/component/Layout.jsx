@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCircle2 } from "lucide-react";
 import { decrement, increment } from "../store/progress/progressSlice";
-import { button } from "./ApplicationCSS";
+import { button, loader } from "./ApplicationCSS";
 function Layout(){
     
     const navObj = {
@@ -82,7 +82,7 @@ function Layout(){
 
             {accSlice.loading || performanceSlice.loading?
                 <div className="flex justify-center pt-40">
-                    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className={`${loader}`}></div>
                 </div>
             :
             <Outlet />

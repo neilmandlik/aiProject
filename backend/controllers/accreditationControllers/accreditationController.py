@@ -1,5 +1,6 @@
 from flask import jsonify
 from controllers.accreditationControllers.accreditationHelper import get_latest_accreditation
+from controllers.accreditationControllers.accreditationHelper import generate_and_save_rubrics
 
 
 def accreditationFileNameController():
@@ -16,5 +17,9 @@ def accreditationFileNameController():
     else:
         return jsonify({"message": "No accreditation files found"}), 404
     
-# def AddAccreditationFileController():
+def addAccreditationFileController(text, dbObj):
+    #Generate Rubrics
+
+    return generate_and_save_rubrics(text, dbObj)
+
     

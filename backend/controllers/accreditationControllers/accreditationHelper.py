@@ -5,17 +5,15 @@ from models.PerformanceDetails import PerformanceDetails
 from models.PerformanceScore import PerformanceScore
 from databaseConnection import sessionLocal
 
+
+from agents.rubricGenerator import generate_rubrics
+
 def get_latest_accreditation():
     session = sessionLocal()
     try:
-        latest_per_subq = session.query(func.max(PerformanceDetails.per_id)).scalar_subquery()
 
         result = (
             session.query(AccreditationDetails)
-            .join(AccreditationRubrics, AccreditationRubrics.acc_id == AccreditationDetails.acc_id)
-            .join(PerformanceScore, PerformanceScore.acc_rub_id == AccreditationRubrics.acc_rub_id)
-            .join(PerformanceDetails, PerformanceDetails.per_id == PerformanceScore.per_id)
-            .filter(PerformanceDetails.per_id == latest_per_subq)
             .distinct()
             .all()
         )
@@ -23,3 +21,52 @@ def get_latest_accreditation():
         return result
     finally:
         session.close()
+
+
+def generate_and_save_rubrics(text: str, dbObj):
+
+    # Generate rubrics
+    rubrics = generate_rubrics(text)
+
+    try:
+        rubric_list = rubrics["rubrics"]
+        if not rubric_list:
+            raise ValueError("No rubrics generated.")
+
+        # Save rubrics into DB
+        with sessionLocal() as session:
+
+            new_acc = AccreditationDetails(
+                acc_filename=dbObj["filename"],
+                acc_body_name=dbObj["acc_body_name"]
+            )
+            session.add(new_acc)
+            session.commit()
+            session.refresh(new_acc) 
+
+            # Insert rubrics
+            bulk_objects = [
+                AccreditationRubrics(
+                    acc_id=new_acc.acc_id,
+                    acc_rubric=item["rubric"],
+                    acc_rub_description=item["description"]
+                )
+                for item in rubric_list
+            ]
+
+            session.bulk_save_objects(bulk_objects)
+            session.commit()
+
+            return {
+                "success": True,
+                "message": "Rubrics saved successfully",
+                "acc_id": new_acc.acc_id
+            }
+
+    except Exception as e:
+        print(f"Error while generating or saving rubrics: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+

@@ -10,3 +10,8 @@ def getSyllabusFileNamesControllers():
             return jsonify({"message": "No syllabus file name found"}), 404
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+    
+def addSyllabusFileController(filePath):
+    # Process the syllabus file as needed
+    pass
+    

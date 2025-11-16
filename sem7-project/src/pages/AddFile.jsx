@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { button } from "../component/ApplicationCSS";
+import { button, loader } from "../component/ApplicationCSS";
 import { ArrowLeft } from "lucide-react";
 import { setCurrentAccBody} from "../store/accreditation/accSlice";
 import { postFileThunk } from "../store/file/fileSlice";
@@ -17,14 +17,15 @@ function AddFile(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if(!hasClicked) return;
         if(fileSlice.errMsg && hasClicked){
             alert(`File upload error: ${fileSlice.errMsg}`);
+            setHasClicked(false);
         }
-        else{
+
+        else if(!fileSlice.loading && !fileSlice.errMsg && hasClicked){
             navigate(`${progressSlice.step===1?'/accreditation-pdf':'/syllabus-pdf'}`);
+            setHasClicked(false);
         }
-        setHasClicked(false);
     },[fileSlice]);
 
     const handleFileSelect = (e) => {
@@ -80,7 +81,14 @@ function AddFile(){
                     Cancel
                 </button>
             </div>
-            {progressSlice.step === 1 && (
+            {
+            fileSlice.loading && hasClicked
+            ?
+            <div className="flex justify-center pt-40">
+                <div className={`${loader}`}></div>
+            </div>
+            :
+            progressSlice.step === 1 && !fileSlice.loading && (
                 <div className="text-center">
                     <label
                     htmlFor="accreditationBody"
@@ -99,6 +107,8 @@ function AddFile(){
                     />
                 </div>
             )}
+            {
+            !fileSlice.loading && 
             <div className="flex flex-col items-center justify-center mt-10">
                 <label
                     onDragOver={handleDragOver}
@@ -137,6 +147,7 @@ function AddFile(){
                     </div>
                 )}
             </div>
+            }
         </>
     )
 }

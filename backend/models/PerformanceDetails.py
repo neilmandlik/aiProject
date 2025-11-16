@@ -8,4 +8,3 @@ class PerformanceDetails(Base):
     per_id = Column(Integer, primary_key=True)
     per_name = Column(String(30))
     syll_id = Column(Integer, ForeignKey("syllabus_details.syll_id"))
-    review_percentage = Column(Float)

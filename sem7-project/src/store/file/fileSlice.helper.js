@@ -11,6 +11,7 @@ export const handleFileExtraReducers = (builder,getThunk) =>{
     builder
     .addCase(getThunk.pending ,(state)=>{
         state.loading = true
+        state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.loading = false
