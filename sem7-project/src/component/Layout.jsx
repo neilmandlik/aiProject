@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserCircle2 } from "lucide-react";
 import { decrement, increment } from "../store/progress/progressSlice";
 import { button, loader } from "./ApplicationCSS";
+import { setSelectedAccFiles } from "../store/accreditation/accSlice";
 function Layout(){
     
     const navObj = {
@@ -38,6 +39,9 @@ function Layout(){
 
     const handleClick = (direction) => {
         if(direction){
+            if(progressSlice.step===1){
+                dispatch(setSelectedAccFiles())
+            }
             dispatch(increment())
         }
         else{

@@ -1,4 +1,4 @@
-from controllers.syllabusControllers.syllabusHelpers import get_latest_syllabus
+from controllers.syllabusControllers.syllabusHelpers import get_latest_syllabus, add_syllabus_filename
 from flask import jsonify
 
 def getSyllabusFileNamesControllers():
@@ -11,7 +11,10 @@ def getSyllabusFileNamesControllers():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
     
-def addSyllabusFileController(filePath):
-    # Process the syllabus file as needed
-    pass
+def addSyllabusFileController(dbObj):
+
+    #Make DB call to add syllabus File name
+    return add_syllabus_filename(dbObj)
+
+
     

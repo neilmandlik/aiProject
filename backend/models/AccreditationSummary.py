@@ -5,7 +5,7 @@ from databaseConnection import Base
 class AccreditationSummary(Base):
     __tablename__ = "accreditation_summary"
 
-    acc_summary_id = Column(Integer, primary_key=True)
+    acc_summary_id = Column(Integer, primary_key=True, autoincrement=True)
     acc_summary = Column(Text)
     acc_id = Column(Integer, ForeignKey("accreditation_details.acc_id"))
 

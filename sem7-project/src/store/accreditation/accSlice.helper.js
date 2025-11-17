@@ -8,9 +8,13 @@ export const handleAccrediationExtraReducers = (builder,getThunk) =>{
     builder
     .addCase(getThunk.pending ,(state)=>{
         state.loading = true
+        state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.fileNames = action.payload
+        state.fileNames = action.payload.map(fileObj=>({
+            ...fileObj,
+            isChecked: false
+        }))
         state.loading = false
         state.errMsg = ""
     })

@@ -21,8 +21,7 @@ def fileUploadController():
         
         filename = secure_filename(file.filename)
 
-        print(filename)
-
+        #Check Before uploading File
         if fileType == 'accreditation':
             acc_body_name = request.form.get('accBodyName')
 
@@ -33,11 +32,12 @@ def fileUploadController():
         folderPath = os.path.join(UPLOAD_FOLDER, fileType)
         os.makedirs(folderPath, exist_ok=True)
         save_path = os.path.join(folderPath,filename)
-        file.save(save_path)  
+        file.save(save_path)      
 
-        text = extract_text_from_pdf(save_path)        
-
+        #Check to save in db
         if fileType == 'accreditation':
+
+            text = extract_text_from_pdf(save_path)    
 
             dbObj = {
                 "filename": filename,
@@ -45,6 +45,7 @@ def fileUploadController():
             }
 
             returnObj = addAccreditationFileController(text, dbObj)
+            
             if returnObj["success"]:
                 return jsonify({
                     "message": "File uploaded and rubrics generated successfully",
@@ -58,7 +59,24 @@ def fileUploadController():
                 }), 500
 
         elif fileType == 'syllabus':
-            addSyllabusFileController(text)
+
+            dbObj = {
+                "filename": filename
+            }
+
+            returnObj = addSyllabusFileController(dbObj)
+
+            if returnObj["success"]:
+                return jsonify({
+                    "message": "File uploaded successfully",
+                    "filename": filename,
+                    "syll_id": returnObj.get("syll_id")
+                }), 201
+            else:
+                return jsonify({
+                    "message": "Failed to generate rubrics",
+                    "error": returnObj.get("message")
+                }), 500
         
 
 

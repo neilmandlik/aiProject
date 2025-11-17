@@ -5,6 +5,6 @@ from databaseConnection import Base
 class AccreditationDetails(Base):
     __tablename__ = "accreditation_details"
 
-    acc_id = Column(Integer, primary_key=True)
+    acc_id = Column(Integer, primary_key=True, autoincrement=True)
     acc_filename = Column(String(100))
     acc_body_name = Column(String(15))

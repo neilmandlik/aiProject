@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { getAccrediationThunk } from '../store/accreditation/accSlice';
+import { getAccrediationThunk, setIsChecked } from '../store/accreditation/accSlice';
 import store from '../store/store';
 import { Eye, Trash2, MoreHorizontal, Plus } from 'lucide-react';
 import { useEffect } from 'react';
@@ -47,7 +47,17 @@ function AccrediatationPDFs(){
                         ? <p>{accreditationSlice.errMsg}</p>
                         : accreditationSlice.fileNames.map((fileObj, index) => (
                             <div className='bg-gradient-to-r from-gray-100 to-gray-200 shadow-md rounded-lg p-5 flex justify-between items-center hover:shadow-xl transition' key={index}>
-                                <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
+                                <div className='flex items-center gap-4'>
+                                    <input 
+                                        id={`accCheckbox${index}`}
+                                        type="checkbox"
+                                        checked = {fileObj.isChecked}
+                                        onChange={(e)=>dispatch(setIsChecked({index: index, isChecked: e.target.checked}))}
+                                    />
+                                    <label htmlFor={`accCheckbox${index}`}>
+                                        <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
+                                    </label>
+                                </div>
 
                                 <div className='flex gap-3'>
                                     <button className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full">
