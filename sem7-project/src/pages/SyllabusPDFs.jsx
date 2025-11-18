@@ -3,6 +3,7 @@ import { getSyllabusFileNameThunk, setSelectedSyllabusFile } from "../store/syll
 import store from "../store/store"
 import { Plus, Eye, Trash2, MoreHorizontal } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 export const syllabusLoader = async() => {
     await store.dispatch(getSyllabusFileNameThunk())
@@ -19,7 +20,7 @@ function SyllabusPDFs() {
     }
 
     const handleSyllabusFileChange = (e) => {
-        dispatch(setSelectedSyllabusFile(e.target.value))
+        dispatch(setSelectedSyllabusFile(Number(e.target.value)))
     }
 
     return(
@@ -51,6 +52,7 @@ function SyllabusPDFs() {
                                     type="radio" 
                                     name="selectedSyllabus" 
                                     value={fileObj.syll_id} 
+                                    checked={fileObj.syll_id === syllabusSlice.selectedSyllabusFile}
                                     className="w-4 h-4 accent-blue-600"
                                     onChange={handleSyllabusFileChange}
                                 />
