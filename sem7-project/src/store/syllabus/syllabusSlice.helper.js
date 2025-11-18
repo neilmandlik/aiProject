@@ -12,7 +12,7 @@ export const handleSyllabusExtraReducers = (builder,getThunk) =>{
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.syllabusFile = action.payload
+        state.syllabusFiles = action.payload
         state.loading = false
         state.errMsg = ""
     })

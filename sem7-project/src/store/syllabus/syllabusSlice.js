@@ -2,11 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { getSyllabusFileNames, handleSyllabusExtraReducers } from "./syllabusSlice.helper"
 
 const initialState = {
-    syllabusFile: {
-        fileName: ""
-    },
+    syllabusFiles: [],
     loading: false,
-    errMsg: ""
+    errMsg: "",
+    selectedSyllabusFile: 0
 }
 
 export const getSyllabusFileNameThunk = createAsyncThunk('syllabus/fetchFileNames', getSyllabusFileNames)
@@ -14,8 +13,14 @@ export const getSyllabusFileNameThunk = createAsyncThunk('syllabus/fetchFileName
 const syllabusSlice = createSlice({
     name: 'syllabus',
     initialState,
-    reducers: {},
+    reducers: {
+        setSelectedSyllabusFile: (state, action) => {
+            state.selectedSyllabusFile = action.payload
+        }
+    },
     extraReducers: (builder) => handleSyllabusExtraReducers(builder, getSyllabusFileNameThunk)
 })
 
+
+export const {setSelectedSyllabusFile} = syllabusSlice.actions
 export default syllabusSlice.reducer

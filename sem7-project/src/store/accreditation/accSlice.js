@@ -22,7 +22,7 @@ const accSlice = createSlice({
             state.fileNames[index].isChecked = isChecked
         },
         setSelectedAccFiles: (state) => {
-            state.selectedAccFiles = state.fileNames.filter(fileObj=>fileObj.isChecked)
+            state.selectedAccFiles = state.fileNames.filter(fileObj=>fileObj.isChecked).map(fileObj=>fileObj.acc_id)
         }
     },
     extraReducers: (builder) => handleAccrediationExtraReducers(builder, getAccrediationThunk)

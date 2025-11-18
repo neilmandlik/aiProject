@@ -5,9 +5,10 @@ def get_latest_syllabus():
     session = sessionLocal()
     try:
         latest_syllabus = (
-            session.query(SyllabusDetails.syll_filename)
+            session.query(SyllabusDetails.syll_filename, SyllabusDetails.syll_id)
             .order_by(SyllabusDetails.syll_id.desc())
-            .first()
+            .distinct()
+            .all()
         )
         return latest_syllabus
 
