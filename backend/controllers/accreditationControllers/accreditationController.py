@@ -2,6 +2,8 @@ from flask import jsonify
 from controllers.accreditationControllers.accreditationHelper import get_latest_accreditation
 from controllers.accreditationControllers.accreditationHelper import generate_and_save_rubrics
 
+from agents.rubricGenerator import generate_rubrics
+
 
 def accreditationFileNameController():
     acc_list = get_latest_accreditation()
@@ -20,6 +22,8 @@ def accreditationFileNameController():
 def addAccreditationFileController(text, dbObj):
     #Generate Rubrics
 
-    return generate_and_save_rubrics(text, dbObj)
+    rubrics = generate_rubrics(text)
+
+    return generate_and_save_rubrics(rubrics["rubrics"],dbObj)
 
     

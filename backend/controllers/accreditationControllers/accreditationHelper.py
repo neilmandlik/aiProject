@@ -6,8 +6,6 @@ from models.PerformanceScore import PerformanceScore
 from databaseConnection import sessionLocal
 
 
-from agents.rubricGenerator import generate_rubrics
-
 def get_latest_accreditation():
     session = sessionLocal()
     try:
@@ -23,13 +21,10 @@ def get_latest_accreditation():
         session.close()
 
 
-def generate_and_save_rubrics(text: str, dbObj):
-
-    # Generate rubrics
-    rubrics = generate_rubrics(text)
+def generate_and_save_rubrics(rubrics,dbObj):
 
     try:
-        rubric_list = rubrics["rubrics"]
+        rubric_list = rubrics
         if not rubric_list:
             raise ValueError("No rubrics generated.")
 
@@ -42,6 +37,7 @@ def generate_and_save_rubrics(text: str, dbObj):
             )
             session.add(new_acc)
             session.commit()
+            
             session.refresh(new_acc) 
 
             # Insert rubrics
