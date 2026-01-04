@@ -1,12 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getPerformanceData, handlePerformanceExtraReducers } from "./performance.helper"
+import { generatePerformanceReview, getPerformanceData, getPerformanceReview, handleGenerateReviewExtraReducers, handleGetReviewExtraReducers, handlePerformanceExtraReducers } from "./performance.helper"
 
 export const getPerformanceThunk = createAsyncThunk("api/getPerformanceRecords", getPerformanceData)
+export const generatePerformanceThunk = createAsyncThunk("api/generatePerformance", (_,thunkAPI) => generatePerformanceReview(thunkAPI) )
+export const getPerformanceReviewThunk = createAsyncThunk("api/getPerformanceReview", (_,thunkAPI) => getPerformanceReview(thunkAPI))
 
 const initialState = {
+    performanceSummary: {},
+    successData: {},
     performanceRecords: [],
     loading: false,
-    errMsg: ""
+    errMsg: "",
+    selectedId: 0
 }
 
 const performanceSlice = createSlice({
@@ -18,7 +23,11 @@ const performanceSlice = createSlice({
             state.performanceRecords = state.performanceRecords.map((item, idx) => index === idx ? {...item, isReviewVisible: !item.isReviewVisible} : item);
         }
     },
-    extraReducers: (builder) => handlePerformanceExtraReducers(builder, getPerformanceThunk)
+    extraReducers: (builder) => {
+        handlePerformanceExtraReducers(builder, getPerformanceThunk);
+        handleGenerateReviewExtraReducers(builder, generatePerformanceThunk);
+        handleGetReviewExtraReducers(builder, getPerformanceReviewThunk)
+    }
 })
 
 export const { toggleReviewVisibility } = performanceSlice.actions

@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCircle2 } from "lucide-react";
 import { decrement, increment } from "../store/progress/progressSlice";
 import { button, loader } from "./ApplicationCSS";
 import { setSelectedAccFiles } from "../store/accreditation/accSlice";
+import { generatePerformanceThunk } from "../store/performance/performanceSlice";
 function Layout(){
     
     const navObj = {
@@ -42,6 +43,9 @@ function Layout(){
             if(progressSlice.step===1){
                 dispatch(setSelectedAccFiles())
             }
+            if(progressSlice.step===2){
+                dispatch(generatePerformanceThunk())
+            }
             dispatch(increment())
         }
         else{
@@ -63,7 +67,8 @@ function Layout(){
                             (progressSlice.step == navItem) && !progressSlice.isOnPerformanceHistory
                             ? "bg-indigo-600 text-white shadow-md"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                        }`}
+                        }
+                        cursor-not-allowed`}
                     >
                         {navObj[navItem].name}
                     </div>
@@ -74,7 +79,7 @@ function Layout(){
                 <div className="flex items-center gap-7 px-4 py-2 rounded-md">                
                     <NavLink 
                         to={`performance-history`} 
-                        className={`border border-white px-4 py-2 rounded-md hover:bg-indigo-500 hover:border-transparent text-white font-medium shadow-md transition ${progressSlice.isOnPerformanceHistory?"bg-indigo-500 border-transparent":""}`}>
+                        className={`border px-4 py-2 rounded-md hover:bg-indigo-500 hover:border-transparent text-white font-medium shadow-md transition ${progressSlice.isOnPerformanceHistory?"bg-indigo-500 border-transparent":" border-white"}`}>
                         Performance History
                     </NavLink>
                     <button className="text-white shadow-md transition">
@@ -105,7 +110,7 @@ function Layout(){
                 {/* Next Button */}
                 <button 
                     className={`${button}`}                    
-                    onClick={()=>handleClick(1,)}
+                    onClick={()=>handleClick(1)}
                 >
                     Next
                 </button>

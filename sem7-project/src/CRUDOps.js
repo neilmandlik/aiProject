@@ -69,3 +69,43 @@ export const postFile = async (route, file, extraFields = {}) => {
     throw error;
   }
 };
+
+
+export const postData = async (route, body) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${route}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    // Network failure (backend fully down)
+    if (!response) {
+      throw new Error("NO_RESPONSE");
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      const err = new Error(data?.message || "Server error");
+      err.status = response.status;
+      err.userMessage =
+        "Something went wrong while sending data. Please try again.";
+      throw err;
+    }
+
+    return data;
+  } catch (error) {
+    if (error.name === "TypeError") {
+      // Usually "Failed to fetch"
+      error.userMessage =
+        "Cannot connect to the server right now. Please check your network.";
+    }
+    throw error;
+  }
+};

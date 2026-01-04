@@ -1,6 +1,4 @@
-import data from '../assets/accPdfAPI.json' //Later will be changed with the actual path
-import performanceData from '../assets/performanceAPI.json' //Later will be changed with the actual path
-import { getData, postFile } from '../CRUDOps';
+import { getData, postData, postFile } from '../CRUDOps';
 
 export const accrediationFileDataService = async() => {
     return await getData(`accreditation-file-names`)
@@ -20,4 +18,12 @@ export const performanceDataService = async() => {
 
 export const syllabusFileNamesService = async() => {
     return await getData(`syllabus-file-name`)
+}
+
+export const generatePerformanceDataService = async(postDataObj) => {
+    return await postData(`generate-review`, postDataObj)
+}
+
+export const getPerformanceReviewService = async(perId) => {
+    return await getData(`get-review/${perId}`)
 }

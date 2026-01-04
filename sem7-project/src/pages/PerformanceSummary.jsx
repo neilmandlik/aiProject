@@ -1,6 +1,21 @@
+import { useEffect } from "react"
+import { getPerformanceReviewThunk } from "../store/performance/performanceSlice"
+import store from "../store/store"
 import CircularProgress from "./ProgressIndicator"
+import { useSelector } from "react-redux"
+
+export const performanceSummaryLoader = async() => {
+    await store.dispatch(getPerformanceReviewThunk())
+}
 
 function PerformanceSummary(){
+
+    const performanceSlice = useSelector(state => state.performance)
+
+    useEffect(()=>{
+        console.log(performanceSlice)
+    },[])
+
     return(
         <>
             <div className="flex gap-4 p-6 items-stretch">
