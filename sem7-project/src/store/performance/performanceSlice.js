@@ -11,7 +11,8 @@ const initialState = {
     performanceRecords: [],
     loading: false,
     errMsg: "",
-    selectedId: 0
+    selectedId: 0,
+    reviewLoading: false
 }
 
 const performanceSlice = createSlice({

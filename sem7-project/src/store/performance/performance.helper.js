@@ -5,11 +5,11 @@ export const getPerformanceData = async() => {
 }
 
 export const generatePerformanceReview = async(thunk) => {
-    const performance = thunk.getState().performance
+    const accreditation = thunk.getState().accreditation
     const syllabus = thunk.getState().syllabus
     const postBodyObj = {
-        accFiles: performance.selectedAccFiles,
-        syllFile: syllabus.selectedSyllFile
+        accFiles: accreditation.selectedAccFiles,
+        syllFile: syllabus.selectedSyllabusFile
     }
 
     return await generatePerformanceDataService(postBodyObj)
@@ -45,17 +45,17 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
 export const handleGenerateReviewExtraReducers = (builder, getThunk) => {
     builder
     .addCase(getThunk.pending ,(state)=>{
-        state.loading = true
+        state.reviewLoading = true
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.successData = {...action.payload}
-        state.loading = false
+        state.reviewLoading = false
         state.errMsg = ""
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message
-        state.loading = false
+        state.reviewLoading = false
     })
 }
 
