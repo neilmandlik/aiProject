@@ -27,7 +27,7 @@ function PerformanceHistory(){
     },[])
 
     const handleReviewVisibility = (index) => {
-        dispatch(toggleReviewVisibility(index))
+        // dispatch(toggleReviewVisibility(index))
     }
 
     const handleOnNewSummaryClick = () => {
@@ -59,17 +59,7 @@ function PerformanceHistory(){
                                         className="flex items-center justify-between px-6 py-4 cursor-pointer"
                                     >
                                         <span className="text-gray-700 font-medium text-lg">{item.reviewName}</span>
-                                        {item.isReviewVisible ? (
-                                        <ChevronUp className="text-gray-500" size={22} />
-                                        ) : (
-                                        <ChevronDown className="text-gray-500" size={22} />
-                                        )}
                                     </div>
-
-                                    {/* Optional expandable content */}
-                                    {item.isReviewVisible && (
-                                        <ReviewDetails index={index} />                                     
-                                    )}
                                 </div>
                             </>
                         ))}

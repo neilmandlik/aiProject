@@ -36,9 +36,8 @@ def generate_and_save_rubrics(rubrics,dbObj):
                 acc_body_name=dbObj["acc_body_name"]
             )
             session.add(new_acc)
-            session.commit()
             
-            session.refresh(new_acc) 
+            session.flush()
 
             # Insert rubrics
             bulk_objects = [

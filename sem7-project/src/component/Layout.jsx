@@ -38,15 +38,21 @@ function Layout(){
         }
     },[progressSlice.step])
 
+    useEffect(()=>{
+        if(!performanceSlice.isGenerateResponseLoading && performanceSlice.successData?.isReviewGenerated){
+            dispatch(increment())
+        }
+    },[performanceSlice.isGenerateResponseLoading])
+
     const handleClick = (direction) => {
         if(direction){
             if(progressSlice.step===1){
                 dispatch(setSelectedAccFiles())
+                dispatch(increment())
             }
             if(progressSlice.step===2){
                 dispatch(generatePerformanceThunk())
             }
-            dispatch(increment())
         }
         else{
             dispatch(decrement())

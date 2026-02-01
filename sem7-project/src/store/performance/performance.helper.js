@@ -18,6 +18,9 @@ export const generatePerformanceReview = async(thunk) => {
 export const getPerformanceReview = async(thunk) => {
     const performance = thunk.getState().performance
     const id = performance.selectedId
+    if(id == -1){
+        console.error("No Id selected")
+    }
     return await getPerformanceReviewService(id)
 }
 
@@ -30,8 +33,6 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.performanceRecords = action.payload.performances.map(item=>({
             reviewName: item.performance_name,
-            reviewData: item.reviewData,
-            isReviewVisible: false
         }))
         state.loading = false
         state.errMsg = ""
@@ -45,17 +46,23 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
 export const handleGenerateReviewExtraReducers = (builder, getThunk) => {
     builder
     .addCase(getThunk.pending ,(state)=>{
-        state.reviewLoading = true
+        state.isGenerateResponseLoading = true
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.successData = {...action.payload}
-        state.reviewLoading = false
+        if(!state.successData.performanceId){
+            state.successData.isReviewGenerated = false
+        }
+        else{
+            state.selectedId = state.successData.performanceId
+        }
+        state.isGenerateResponseLoading = false
         state.errMsg = ""
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message
-        state.reviewLoading = false
+        state.isGenerateResponseLoading = false
     })
 }
 
@@ -67,7 +74,7 @@ export const handleGetReviewExtraReducers = (builder, getThunk) => {
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.successData = {...action.payload}
+        state.performanceSummary = {...action.payload}
         state.loading = false
         state.errMsg = ""
     })

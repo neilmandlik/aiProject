@@ -69,14 +69,16 @@ def save_performance(syllId, reviewList):
         perId = save_performance_detail(session, syllId)
 
         if not perId:
-            return False
+            return None
 
         isSaved = save_performance_score(session,perId=perId,reviewList=reviewList)
 
-        if not isSaved:
-            return False
+        session.commit()
 
-    return True
+        if not isSaved:
+            return None
+
+    return perId
         
 
 
@@ -87,7 +89,7 @@ def save_performance_detail(session,syllId):
     )
 
     session.add(performance_detail)
-    session.commit()
+    session.flush()
 
     return performance_detail.per_id
 
@@ -107,7 +109,6 @@ def save_performance_score(session,perId,reviewList):
             )
 
         session.bulk_save_objects(scoreObjects)
-        session.commit()
         return True
 
     except Exception as e:

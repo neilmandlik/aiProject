@@ -12,7 +12,8 @@ const initialState = {
     loading: false,
     errMsg: "",
     selectedId: 0,
-    reviewLoading: false
+    reviewLoading: false,
+    isGenerateResponseLoading: false
 }
 
 const performanceSlice = createSlice({
@@ -22,6 +23,9 @@ const performanceSlice = createSlice({
         toggleReviewVisibility: (state, action) => {
             const index = action.payload;
             state.performanceRecords = state.performanceRecords.map((item, idx) => index === idx ? {...item, isReviewVisible: !item.isReviewVisible} : item);
+        },
+        setSelectedId: (state,action) => {
+            state.selectedId = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -31,5 +35,5 @@ const performanceSlice = createSlice({
     }
 })
 
-export const { toggleReviewVisibility } = performanceSlice.actions
+export const { toggleReviewVisibility, setSelectedId } = performanceSlice.actions
 export default performanceSlice.reducer

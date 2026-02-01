@@ -55,10 +55,11 @@ def generatePerformanceReview():
             return jsonify({"message": "Review could not be generated"}),500
 
         #Step 5
+        perId = save_performance(selectedSyllFile,review["result"])
         if not save_performance(selectedSyllFile,review["result"]):
-            return jsonify({"message": "Unable to save the Generated Review"})
+            return jsonify({"isReviewGenerated": False,"performanceId": None, "message": "Unable to save the Generated Review"})
         
-        return jsonify({"message": "Successful"})
+        return jsonify({"isReviewGenerated": True, "performanceId": perId}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)})
