@@ -3,7 +3,9 @@ from controllers.performanceControllers.performanceHelpers import (
     get_all_performance_names, 
     get_selected_acc_rubrics, 
     get_selected_syllabus_name,
-    save_performance
+    save_performance,
+    get_complete_review,
+    jsonify_results
 )
 from controllers.fileControllers.fileHelper import extract_text_from_pdf
 import os
@@ -56,13 +58,20 @@ def generatePerformanceReview():
 
         #Step 5
         perId = save_performance(selectedSyllFile,review["result"])
-        if not save_performance(selectedSyllFile,review["result"]):
+        if not perId:
             return jsonify({"isReviewGenerated": False,"performanceId": None, "message": "Unable to save the Generated Review"})
         
         return jsonify({"isReviewGenerated": True, "performanceId": perId}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)})
+
+def getPerformanceReview(id):
+
+    result = get_complete_review(id)
+    return jsonify(jsonify_results(result))
+
+
     
 
     

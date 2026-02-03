@@ -16,7 +16,7 @@ function App() {
         {/* <Route index element={<TestComponent />} loader={testLoader}></Route> */}
         <Route path='accreditation-pdf' element={<AccrediatationPDFs />} loader={accreditationLoader} />
         <Route path='syllabus-pdf' element={<SyllabusPDFs />} loader={syllabusLoader}/>
-        <Route path='performance-summary' element={<PerformanceSummary />} loader={performanceSummaryLoader} />
+        <Route path='performance-summary/:id' element={<PerformanceSummary />} loader={performanceSummaryLoader} />
         <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader}/>
       </Route>
       <Route path='/add-file' element={<AddFile />} />

@@ -2,28 +2,12 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCircle2 } from "lucide-react";
-import { decrement, increment } from "../store/progress/progressSlice";
+import { setProgressStep } from "../store/progress/progressSlice";
 import { button, loader } from "./ApplicationCSS";
 import { setSelectedAccFiles } from "../store/accreditation/accSlice";
 import { generatePerformanceThunk } from "../store/performance/performanceSlice";
+import { navObj, progressStep } from "./enums/SyllabusEvaluatorEnum";
 function Layout(){
-    
-    const navObj = {
-        1: {
-            name: "Accreditation PDFs",
-            to: "accreditation-pdf"
-        },
-        
-        2: {
-            name: "Syllabus Structure PDF",
-            to: "syllabus-pdf",
-        },
-        
-        3: {
-            name: "Peformance Summary",
-            to: "performance-summary",
-        },
-    }
 
     
     const navigate = useNavigate();
@@ -34,13 +18,15 @@ function Layout(){
     
     useEffect(()=>{
         if(!progressSlice.isOnPerformanceHistory){
-            navigate(navObj[progressSlice.step].to)
+            if(performanceSlice.successData.isReviewGenerated && progressSlice.step === progressStep.Review){                
+                navigate(`${navObj[progressSlice.step].to}/${performanceSlice.selectedId}`)
+            }
         }
     },[progressSlice.step])
 
     useEffect(()=>{
         if(!performanceSlice.isGenerateResponseLoading && performanceSlice.successData?.isReviewGenerated){
-            dispatch(increment())
+            dispatch(setProgressStep(progressStep.Review))
         }
     },[performanceSlice.isGenerateResponseLoading])
 
@@ -48,14 +34,14 @@ function Layout(){
         if(direction){
             if(progressSlice.step===1){
                 dispatch(setSelectedAccFiles())
-                dispatch(increment())
+                dispatch(setProgressStep(progressSlice.step+1))
             }
             if(progressSlice.step===2){
                 dispatch(generatePerformanceThunk())
             }
         }
         else{
-            dispatch(decrement())
+            dispatch(setProgressStep(progressSlice.step-1))
         }          
     }
 

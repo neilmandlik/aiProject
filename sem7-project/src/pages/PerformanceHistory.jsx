@@ -8,6 +8,7 @@ import {ArrowLeft} from 'lucide-react'
 import { useEffect } from "react"
 import { setIsOnPerformanceHistory } from "../store/progress/progressSlice"
 import { useNavigate } from "react-router-dom"
+import { navObj, progressStep } from "../component/enums/SyllabusEvaluatorEnum"
 
 export const performanceLoader = async() => {
     await store.dispatch(getPerformanceThunk())
@@ -26,12 +27,13 @@ function PerformanceHistory(){
         dispatch(setIsOnPerformanceHistory(true))
     },[])
 
-    const handleReviewVisibility = (index) => {
+    const goToSummary = (performanceId) => {
+        navigate(`../${navObj[progressStep.Review].to}/${performanceId}`)
         // dispatch(toggleReviewVisibility(index))
     }
 
     const handleOnNewSummaryClick = () => {
-        navigate('../accreditation-pdf',{relative: 'path'})
+        navigate(`../${navObj[progressStep.Accreditation].to}`,{relative: 'path'})
     }
 
     return (
@@ -50,15 +52,15 @@ function PerformanceHistory(){
                     ?<p>{performanceSlice.errMsg}</p>
                     :
                     <div className="h-[70dvh] overflow-y-auto p-2 space-y-3">  
-                        {performanceSlice.performanceRecords.map((item, index) => (
+                        {performanceSlice.performanceRecords.map((item) => (
                             <>
                                 <div className="w-full rounded-xl bg-gray-100 shadow-sm transition hover:shadow-md">
                                     
                                     <div
-                                        onClick={()=>handleReviewVisibility(index)}
+                                        onClick={()=>goToSummary(item.performanceId)}
                                         className="flex items-center justify-between px-6 py-4 cursor-pointer"
                                     >
-                                        <span className="text-gray-700 font-medium text-lg">{item.reviewName}</span>
+                                        <span className="text-gray-700 font-medium text-lg">{item.performanceName}</span>
                                     </div>
                                 </div>
                             </>

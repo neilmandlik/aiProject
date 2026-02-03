@@ -4,6 +4,7 @@ from models.AccreditationRubrics import AccreditationRubrics
 from models.SyllabusDetails import SyllabusDetails
 from models.PerformanceDetails import PerformanceDetails
 from models.PerformanceScore import PerformanceScore
+from models.AccreditationDetails import AccreditationDetails
 from datetime import datetime
 
 def get_all_performance_names():
@@ -15,7 +16,7 @@ def get_all_performance_names():
         ).order_by(PerformanceDetails.per_id.asc()).all()
 
         performances = [
-            {"per_id": per_id, "performance_name": name}
+            {"performanceId": per_id, "performanceName": name}
             for per_id, name in results
         ]
 
@@ -114,3 +115,71 @@ def save_performance_score(session,perId,reviewList):
     except Exception as e:
         print(e)
         return False
+    
+
+def get_complete_review(perId):
+    
+    with sessionLocal() as session:
+        try:
+            results = (
+                session.query(
+                    PerformanceDetails.per_id,
+                    PerformanceDetails.per_name,
+
+                    SyllabusDetails.syll_id,
+                    SyllabusDetails.syll_filename,
+
+                    AccreditationDetails.acc_id,
+                    AccreditationDetails.acc_filename,
+                    AccreditationDetails.acc_body_name,
+
+                    AccreditationRubrics.acc_rub_id,
+                    AccreditationRubrics.acc_rubric,
+                    AccreditationRubrics.acc_rub_description,
+
+                    PerformanceScore.per_score,
+                    PerformanceScore.per_justification
+                )
+                .join(SyllabusDetails, PerformanceDetails.syll_id == SyllabusDetails.syll_id)
+                .join(PerformanceScore, PerformanceDetails.per_id == PerformanceScore.per_id)
+                .join(AccreditationRubrics, PerformanceScore.acc_rub_id == AccreditationRubrics.acc_rub_id)
+                .join(AccreditationDetails, AccreditationRubrics.acc_id == AccreditationDetails.acc_id)
+                .filter(PerformanceDetails.per_id == perId)
+                .all()
+            )
+
+            return results
+
+        except Exception as e:
+            print(f"Error fetching performance details: {e}")
+            return None
+
+
+def jsonify_results(result):
+
+    firstRow = result[0]
+    response = {
+        "syllFileName": firstRow.syll_filename,
+        "performanceName": firstRow.per_name,
+        "accreditationDetails": {}
+    }
+
+    for row in result:
+        acc_key = row.acc_id
+
+        if acc_key not in response['accreditationDetails']:
+            response['accreditationDetails'][acc_key]={
+                "accFileName": row.acc_filename,
+                "accBodyName": row.acc_body_name,
+                "performanceDetails": []
+            }
+
+        response["accreditationDetails"][acc_key]["performanceDetails"].append({
+            "performanceScore": row.per_score,
+            "performanceJustification": row.per_justification,
+            "accRubricName": row.acc_rubric,
+            "accRubricDesc": row.acc_rub_description
+        })
+
+    return response
+

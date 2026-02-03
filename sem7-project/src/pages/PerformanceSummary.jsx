@@ -1,16 +1,30 @@
-import { getPerformanceReviewThunk } from "../store/performance/performanceSlice"
+import { getPerformanceReviewThunk, setSelectedId } from "../store/performance/performanceSlice"
 import store from "../store/store"
 import CircularProgress from "./ProgressIndicator"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { loader } from "../component/ApplicationCSS";
+import { setIsOnPerformanceHistory, setProgressStep } from "../store/progress/progressSlice";
+import { progressStep } from "../component/enums/SyllabusEvaluatorEnum";
+import { useEffect } from "react";
 
-export const performanceSummaryLoader = async() => {
+export const performanceSummaryLoader = async({params}) => {
+    const {id} = params
+    store.dispatch(setSelectedId(parseInt(id))) 
+    store.dispatch(setIsOnPerformanceHistory(false))   
+    store.dispatch(setProgressStep(progressStep.Review))
     await store.dispatch(getPerformanceReviewThunk())
 }
 
 function PerformanceSummary(){
 
     const performanceSlice = useSelector(state => state.performance)
+    const progressSlice = useSelector(state => state.progress)
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch(setIsOnPerformanceHistory(false))
+        dispatch(setProgressStep(progressStep.Review))
+    },[])
 
 
     return(

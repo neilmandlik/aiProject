@@ -4,7 +4,8 @@ import store from '../store/store';
 import { Eye, Trash2, MoreHorizontal, Plus } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsOnPerformanceHistory } from '../store/progress/progressSlice';
+import { setIsOnPerformanceHistory, setProgressStep } from '../store/progress/progressSlice';
+import { progressStep } from '../component/enums/SyllabusEvaluatorEnum';
 export const accreditationLoader = async() => {
     await store.dispatch(getAccrediationThunk())
     if(store.getState().accreditation.errMsg){
@@ -22,7 +23,8 @@ function AccrediatationPDFs(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-        dispatch(setIsOnPerformanceHistory(false))        
+        dispatch(setIsOnPerformanceHistory(false))
+        dispatch(setProgressStep(progressStep.Accreditation))        
     },[])
 
     const handleAddAccreditationFile = () => {

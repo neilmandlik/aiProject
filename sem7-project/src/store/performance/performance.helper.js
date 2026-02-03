@@ -18,7 +18,7 @@ export const generatePerformanceReview = async(thunk) => {
 export const getPerformanceReview = async(thunk) => {
     const performance = thunk.getState().performance
     const id = performance.selectedId
-    if(id == -1){
+    if(id === -1){
         console.error("No Id selected")
     }
     return await getPerformanceReviewService(id)
@@ -31,9 +31,7 @@ export const handlePerformanceExtraReducers = (builder,getThunk) =>{
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.performanceRecords = action.payload.performances.map(item=>({
-            reviewName: item.performance_name,
-        }))
+        state.performanceRecords = action.payload.performances.map(item=>item)
         state.loading = false
         state.errMsg = ""
     })
