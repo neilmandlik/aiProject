@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UserCircle2 } from "lucide-react";
+import { ArrowLeft, UserCircle2 } from "lucide-react";
 import { setProgressStep } from "../store/progress/progressSlice";
 import { button, loader } from "./ApplicationCSS";
 import { setSelectedAccFiles } from "../store/accreditation/accSlice";
@@ -18,8 +18,11 @@ function Layout(){
     
     useEffect(()=>{
         if(!progressSlice.isOnPerformanceHistory){
-            if(performanceSlice.successData.isReviewGenerated && progressSlice.step === progressStep.Review){                
+            if(progressSlice.step === progressStep.Review){                
                 navigate(`${navObj[progressSlice.step].to}/${performanceSlice.selectedId}`)
+            }
+            else{
+                navigate(`${navObj[progressSlice.step].to}`)
             }
         }
     },[progressSlice.step])
@@ -43,6 +46,10 @@ function Layout(){
         else{
             dispatch(setProgressStep(progressSlice.step-1))
         }          
+    }
+
+    const handleOnNewSummaryClick = () => {
+        navigate(`/${navObj[progressStep.Accreditation].to}`)
     }
 
     return (
@@ -81,6 +88,18 @@ function Layout(){
 
             </div>
 
+            {
+                (progressSlice.step == progressStep.Review || progressSlice.isOnPerformanceHistory) && 
+                <div>
+                    <button 
+                    onClick={()=>handleOnNewSummaryClick()}
+                    className={`${button} flex items-center gap-2 m-3`}>
+                        <ArrowLeft className="w-5 h-5" />
+                        Generate New Summary
+                    </button>
+                </div>
+            }
+
             {accSlice.loading || performanceSlice.loading?
                 <div className="flex justify-center pt-40">
                     <div className={`${loader}`}></div>
@@ -89,24 +108,31 @@ function Layout(){
             <Outlet />
             }
 
-            <div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-md p-4 flex justify-between items-center z-50">
+            {
+                progressSlice.step !== progressStep.Review && !performanceSlice.isOnPerformanceHistory
+                ?
+                <div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-md p-4 flex justify-between items-center z-50">
 
-                {/* Back Button */}
-                <button 
-                    className={`${button}`}
-                    onClick={()=>handleClick(0)}
-                >
-                    Back
-                </button>
+                    {/* Back Button */}
+                    <button 
+                        className={`${button}`}
+                        onClick={()=>handleClick(0)}
+                    >
+                        Back
+                    </button>
 
-                {/* Next Button */}
-                <button 
-                    className={`${button}`}                    
-                    onClick={()=>handleClick(1)}
-                >
-                    Next
-                </button>
-            </div>
+                    {/* Next Button */}
+                    <button 
+                        className={`${button}`}                    
+                        onClick={()=>handleClick(1)}
+                    >
+                        Next
+                    </button>
+                </div>
+                :
+                null
+            }
+
         </>
     )
 }

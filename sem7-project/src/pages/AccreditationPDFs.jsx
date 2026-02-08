@@ -57,7 +57,7 @@ function AccrediatationPDFs(){
                                         onChange={(e)=>dispatch(setIsChecked({index: index, isChecked: e.target.checked}))}
                                     />
                                     <label htmlFor={`accCheckbox${index}`}>
-                                        <p className='font-medium text-gray-800 truncate'>{fileObj.fileName}</p>
+                                        <p className='font-medium text-gray-800 truncate cursor-pointer'>{fileObj.fileName}</p>
                                     </label>
                                 </div>
 

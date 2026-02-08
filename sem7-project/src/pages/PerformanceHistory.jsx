@@ -32,20 +32,8 @@ function PerformanceHistory(){
         // dispatch(toggleReviewVisibility(index))
     }
 
-    const handleOnNewSummaryClick = () => {
-        navigate(`../${navObj[progressStep.Accreditation].to}`,{relative: 'path'})
-    }
-
     return (
         <>
-            <div>
-                <button 
-                onClick={()=>handleOnNewSummaryClick()}
-                className={`${button} flex items-center gap-2 m-3`}>
-                    <ArrowLeft className="w-5 h-5" />
-                    Generate New Summary
-                </button>
-            </div>
             <div className="flex flex-col gap-4 mt-6">
                 {
                     performanceSlice.errMsg

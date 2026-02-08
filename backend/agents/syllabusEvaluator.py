@@ -22,7 +22,7 @@ Your task:
 - Evaluate the syllabus against EACH rubric independently.
 - Assign a score from 0 to 10 for each rubric.
 - Provide a justification for each score.
-- The justification MUST NOT exceed 480 characters.
+- The justification MUST NOT exceed 480 characters (STRICT RANGE: 400 to 460 characters).
 
 STRICT RULES:
 - acc_id and acc_rub_id MUST NOT be modified.
