@@ -17,14 +17,13 @@ function Layout(){
     const dispatch = useDispatch()
     
     useEffect(()=>{
-        if(!progressSlice.isOnPerformanceHistory){
-            if(progressSlice.step === progressStep.Review){                
-                navigate(`${navObj[progressSlice.step].to}/${performanceSlice.selectedId}`)
-            }
-            else{
-                navigate(`${navObj[progressSlice.step].to}`)
-            }
+        if(progressSlice.step === progressStep.Review){                
+            navigate(`${navObj[progressSlice.step].to}/${performanceSlice.selectedId}`)
         }
+        else{
+            navigate(`${navObj[progressSlice.step].to}`)
+        }
+        
     },[progressSlice.step])
 
     useEffect(()=>{
@@ -40,7 +39,10 @@ function Layout(){
                 dispatch(setProgressStep(progressSlice.step+1))
             }
             if(progressSlice.step===2){
-                dispatch(generatePerformanceThunk())
+                dispatch(generatePerformanceThunk()).unwrap().catch(()=>{
+                    console.log("Hello")
+                    navigate('/error')
+                })
             }
         }
         else{
@@ -59,11 +61,12 @@ function Layout(){
                 {/* Left side - Navigation Links */}
                 <div className="flex items-center gap-4">
                     {Object.keys(navObj).map((navItem, index) => (
+                    index < progressSlice.maxProgressSteps &&
                     <div
                         key={navItem}
                         className={
                         `px-3 py-2 rounded-md text-sm font-medium transition ${
-                            (progressSlice.step == navItem) && !progressSlice.isOnPerformanceHistory
+                            (progressSlice.step == navItem)
                             ? "bg-indigo-600 text-white shadow-md"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"
                         }
@@ -78,7 +81,7 @@ function Layout(){
                 <div className="flex items-center gap-7 px-4 py-2 rounded-md">                
                     <NavLink 
                         to={`performance-history`} 
-                        className={`border px-4 py-2 rounded-md hover:bg-indigo-500 hover:border-transparent text-white font-medium shadow-md transition ${progressSlice.isOnPerformanceHistory?"bg-indigo-500 border-transparent":" border-white"}`}>
+                        className={`border px-4 py-2 rounded-md hover:bg-indigo-500 hover:border-transparent text-white font-medium shadow-md transition ${progressSlice.step === progressStep.PerformanceHistory?"bg-indigo-500 border-transparent":" border-white"}`}>
                         Performance History
                     </NavLink>
                     <button className="text-white shadow-md transition">
@@ -89,7 +92,7 @@ function Layout(){
             </div>
 
             {
-                (progressSlice.step == progressStep.Review || progressSlice.isOnPerformanceHistory) && 
+                (progressSlice.step == progressStep.Review || progressSlice.step == progressStep.PerformanceHistory) && 
                 <div>
                     <button 
                     onClick={()=>handleOnNewSummaryClick()}
@@ -109,7 +112,7 @@ function Layout(){
             }
 
             {
-                progressSlice.step !== progressStep.Review && !performanceSlice.isOnPerformanceHistory
+                progressSlice.step == progressStep.Accreditation || progressSlice.step == progressStep.Syllabus
                 ?
                 <div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-md p-4 flex justify-between items-center z-50">
 

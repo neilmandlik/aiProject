@@ -1,35 +1,24 @@
-import { getPerformanceThunk, toggleReviewVisibility } from "../store/performance/performanceSlice"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { getPerformanceThunk } from "../store/performance/performanceSlice"
 import store from "../store/store"
-import ReviewDetails from "./ReviewDetails"
-import { useDispatch, useSelector } from "react-redux"
-import { button } from "../component/ApplicationCSS"
-import {ArrowLeft} from 'lucide-react'
+import { useSelector } from "react-redux"
 import { useEffect } from "react"
-import { setIsOnPerformanceHistory } from "../store/progress/progressSlice"
 import { useNavigate } from "react-router-dom"
 import { navObj, progressStep } from "../component/enums/SyllabusEvaluatorEnum"
+import { setProgressStep } from "../store/progress/progressSlice"
 
 export const performanceLoader = async() => {
+    store.dispatch(setProgressStep(progressStep.PerformanceHistory))
     await store.dispatch(getPerformanceThunk())
     return store.getState().performance.performanceRecords
 }
 
 function PerformanceHistory(){
 
-    
-    const progressSlice = useSelector((state)=>state.progress)
     const performanceSlice = useSelector(state=>state.performance)
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    
-    useEffect(()=>{
-        dispatch(setIsOnPerformanceHistory(true))
-    },[])
 
     const goToSummary = (performanceId) => {
         navigate(`../${navObj[progressStep.Review].to}/${performanceId}`)
-        // dispatch(toggleReviewVisibility(index))
     }
 
     return (

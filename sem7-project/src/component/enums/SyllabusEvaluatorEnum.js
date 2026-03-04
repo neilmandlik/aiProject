@@ -1,7 +1,9 @@
 export const progressStep = Object.freeze({
     "Accreditation": 1,
     "Syllabus": 2,
-    "Review": 3
+    "Review": 3,
+    "PerformanceHistory": 4,
+    "Error": 5
 })
 
 export const navObj = Object.freeze({
@@ -18,5 +20,15 @@ export const navObj = Object.freeze({
     [progressStep.Review]: {
         name: "Peformance Summary",
         to: "performance-summary",
+    },
+
+    [progressStep.PerformanceHistory]: {
+        name: "Performance History",
+        to: "performance-history",
+    },
+
+    [progressStep.Error]: {
+        name: "Error",
+        to: "error",
     },
 })

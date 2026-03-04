@@ -3,34 +3,30 @@ import store from "../store/store"
 import CircularProgress from "./ProgressIndicator"
 import { useDispatch, useSelector } from "react-redux"
 import { button, loader } from "../component/ApplicationCSS";
-import { setIsOnPerformanceHistory, setProgressStep } from "../store/progress/progressSlice";
-import { navObj, progressStep } from "../component/enums/SyllabusEvaluatorEnum";
-import { useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { setProgressStep } from "../store/progress/progressSlice";
+import { progressStep } from "../component/enums/SyllabusEvaluatorEnum";
 import { accBodyName, accFileName, accHeader, rubricHeader, rubricItem, rubricJustification, rubricList, rubricName, scoreBadge, scoreGood, scoreLow, scoreMid, summaryMeta, summaryMetaLabel, summaryMetaValue } from "./PerformanceSummmary.module";
 
 export const performanceSummaryLoader = async({params}) => {
     const {id} = params
-    store.dispatch(setSelectedId(parseInt(id))) 
-    store.dispatch(setIsOnPerformanceHistory(false))   
     store.dispatch(setProgressStep(progressStep.Review))
+    store.dispatch(setSelectedId(parseInt(id)))   
     await store.dispatch(getPerformanceReviewThunk())
 }
 
 function PerformanceSummary(){
 
     const performanceSlice = useSelector(state => state.performance)
-    const progressSlice = useSelector(state => state.progress)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const progressSlice = useSelector(state => state.progress)
+    // const dispatch = useDispatch()
+    // const navigate = useNavigate()
     const summary = performanceSlice.performanceSummary
     const accDetails = summary.accreditationDetails
 
-    useEffect(()=>{
-        dispatch(setIsOnPerformanceHistory(false))
-        dispatch(setProgressStep(progressStep.Review))
-    },[])
+    // useEffect(()=>{
+    //     dispatch(setIsNotInProgress(false))
+    //     dispatch(setProgressStep(progressStep.Review))
+    // },[])
 
     return(
         <>
@@ -77,15 +73,15 @@ function PerformanceSummary(){
 
                         {/* Right Column */}
                         <div className="rounded-xl flex-[4] shadow-md p-6 bg-white space-y-8 overflow-y-auto min-h-0">
-                            {Object.keys(accDetails).map(ele=>(
-                                <div>
+                            {Object.keys(accDetails).map((ele,index)=>(
+                                <div key={`${index}`}>
                                     <div className={`${accHeader}`}>
-                                        <p class={`${accBodyName}`}>{accDetails[ele].accBodyName}</p>
-                                        <p class={`${accFileName}`}>{accDetails[ele].accFileName}</p>
+                                        <p className={`${accBodyName}`}>{accDetails[ele].accBodyName}</p>
+                                        <p className={`${accFileName}`}>{accDetails[ele].accFileName}</p>
                                     </div>
                                     <div className={`${rubricList}`}>                                        
-                                        {accDetails[ele].performanceDetails.map(det=>(
-                                            <>
+                                        {accDetails[ele].performanceDetails.map((det,i)=>(
+                                            <div key={`${index}${i}`}>
                                                 <div className={`${rubricItem}`}>
                                                     <div className={`${rubricHeader}`}>
                                                         <p className={`${rubricName}`}>{det.accRubricName}</p>
@@ -93,7 +89,7 @@ function PerformanceSummary(){
                                                     </div>
                                                     <p>{`${det.performanceJustification}`}</p>
                                                 </div>
-                                            </>
+                                            </div>
                                         ))}
                                     </div>
 

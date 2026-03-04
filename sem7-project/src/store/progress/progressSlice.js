@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     step: 1,
-    maxSteps: 3,
-    minSteps: 1,
-    isOnPerformanceHistory: false
+    maxProgressSteps: 3,
+    maxSteps: 5,
+    minSteps: 1
 }
 
 const progressSlice = createSlice({
@@ -14,15 +14,11 @@ const progressSlice = createSlice({
         setProgressStep: (state,action) => {
             if(action.payload < state.minSteps || action.payload > state.maxSteps) return
             state.step = action.payload
-        },
-        setIsOnPerformanceHistory: (state,action) => {
-            state.isOnPerformanceHistory = action.payload
         }
     },
 })
 
 export const {
     setProgressStep,
-    setIsOnPerformanceHistory
 } = progressSlice.actions
 export default progressSlice.reducer
