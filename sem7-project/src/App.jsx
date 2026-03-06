@@ -9,6 +9,7 @@ import PerformanceSummary, { performanceSummaryLoader } from './pages/Performanc
 import SyllabusPDFs, { syllabusLoader } from './pages/SyllabusPDFs';
 import AddFile from './pages/AddFile';
 import Error, { errorLoader } from './pages/Error';
+import Rubrics, { rubricLoader } from './pages/Rubrics';
 function App() {
 
   const router = createBrowserRouter(createRoutesFromElements(
@@ -19,6 +20,7 @@ function App() {
         <Route path='syllabus-pdf' element={<SyllabusPDFs />} loader={syllabusLoader}/>
         <Route path='performance-summary/:id' element={<PerformanceSummary />} loader={performanceSummaryLoader} />
         <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader}/>
+        <Route path='rubrics/:id' element={<Rubrics />} loader={rubricLoader} />
         <Route path='error' element={<Error />} loader={errorLoader}/>
       </Route>
       <Route path='/add-file' element={<AddFile />} />

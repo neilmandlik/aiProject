@@ -5,8 +5,8 @@ import { Plus, Eye, Trash2, MoreHorizontal } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-export const syllabusLoader = async() => {
-    await store.dispatch(getSyllabusFileNameThunk())
+export const syllabusLoader = () => {
+    store.dispatch(getSyllabusFileNameThunk())
 }
 
 function SyllabusPDFs() {

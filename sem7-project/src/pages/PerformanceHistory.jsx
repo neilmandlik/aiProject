@@ -6,10 +6,9 @@ import { useNavigate } from "react-router-dom"
 import { navObj, progressStep } from "../component/enums/SyllabusEvaluatorEnum"
 import { setProgressStep } from "../store/progress/progressSlice"
 
-export const performanceLoader = async() => {
+export const performanceLoader = () => {
     store.dispatch(setProgressStep(progressStep.PerformanceHistory))
-    await store.dispatch(getPerformanceThunk())
-    return store.getState().performance.performanceRecords
+    store.dispatch(getPerformanceThunk())
 }
 
 function PerformanceHistory(){

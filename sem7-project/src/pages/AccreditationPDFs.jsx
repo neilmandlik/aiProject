@@ -5,15 +5,14 @@ import { Eye, Trash2, MoreHorizontal, Plus } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProgressStep } from '../store/progress/progressSlice';
-import { progressStep } from '../component/enums/SyllabusEvaluatorEnum';
+import { navObj, progressStep } from '../component/enums/SyllabusEvaluatorEnum';
 
-export const accreditationLoader = async() => {
+export const accreditationLoader = () => {
     store.dispatch(setProgressStep(progressStep.Accreditation)) 
-    await store.dispatch(getAccrediationThunk())
+    store.dispatch(getAccrediationThunk())
     if(store.getState().accreditation.errMsg){
         return ({error: store.getState().accreditation.errMsg, isError: true})
     }
-    return store.getState().accreditation.fileNames
 
 }
 
@@ -25,11 +24,15 @@ function AccrediatationPDFs(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-               
+                       
     },[])
 
     const handleAddAccreditationFile = () => {
         navigate('/add-file')        
+    }
+
+    const handleViewRubricsClick = (accreditationId) => {
+        navigate(`/${navObj[progressStep.Rubric].to}/${accreditationId}`)
     }
 
     return(
@@ -63,7 +66,11 @@ function AccrediatationPDFs(){
                                 </div>
 
                                 <div className='flex gap-3'>
-                                    <button className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full">
+                                    <button 
+                                        onClick={() => handleViewRubricsClick(fileObj.acc_id)} 
+                                        className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full"
+                                        title='View Rubrics'
+                                    >
                                         <Eye className="w-5 h-5 text-blue-600" />
                                     </button>
 

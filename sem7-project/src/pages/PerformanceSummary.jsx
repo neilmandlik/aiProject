@@ -7,11 +7,11 @@ import { setProgressStep } from "../store/progress/progressSlice";
 import { progressStep } from "../component/enums/SyllabusEvaluatorEnum";
 import { accBodyName, accFileName, accHeader, rubricHeader, rubricItem, rubricJustification, rubricList, rubricName, scoreBadge, scoreGood, scoreLow, scoreMid, summaryMeta, summaryMetaLabel, summaryMetaValue } from "./PerformanceSummmary.module";
 
-export const performanceSummaryLoader = async({params}) => {
+export const performanceSummaryLoader = ({params}) => {
     const {id} = params
     store.dispatch(setProgressStep(progressStep.Review))
     store.dispatch(setSelectedId(parseInt(id)))   
-    await store.dispatch(getPerformanceReviewThunk())
+    store.dispatch(getPerformanceReviewThunk())
 }
 
 function PerformanceSummary(){
