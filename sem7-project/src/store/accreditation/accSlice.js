@@ -1,14 +1,26 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getAccrediationFileData, handleAccrediationExtraReducers} from "./accSlice.helper"
+import { 
+    getAccrediationFileData, 
+    getRubrics, 
+    handleAccrediationExtraReducers,
+    handleGetRubricsExtraReducers
+} from "./accSlice.helper"
 const initialState = {
     fileNames: [],
+
     loading: false,
+    isLoadingRubrics: false,
+
     errMsg: '',
+
     currentAccBody: '',
-    selectedAccFiles: []
+    selectedAccFiles: [],
+    rubrics: [],
+    selectedAccId: 0
 }
 
 export const getAccrediationThunk = createAsyncThunk("api/getAccreditationFiles", getAccrediationFileData)
+export const getGetRubricsThunk = createAsyncThunk("api/getRubrics", (_,thunkAPI) => getRubrics(thunkAPI))
 
 const accSlice = createSlice({
     name: "accreditation",
@@ -23,11 +35,22 @@ const accSlice = createSlice({
         },
         setSelectedAccFiles: (state) => {
             state.selectedAccFiles = state.fileNames.filter(fileObj=>fileObj.isChecked).map(fileObj=>fileObj.acc_id)
+        },
+        setSelectedAccId: (state, action) => {
+            state.selectedAccId = action.payload
         }
     },
-    extraReducers: (builder) => handleAccrediationExtraReducers(builder, getAccrediationThunk)
+    extraReducers: (builder) => {
+        handleAccrediationExtraReducers(builder, getAccrediationThunk)
+        handleGetRubricsExtraReducers(builder, getGetRubricsThunk)
+    }
 })
 
 
-export const {setCurrentAccBody, setIsChecked, setSelectedAccFiles} = accSlice.actions
+export const {
+    setCurrentAccBody, 
+    setIsChecked, 
+    setSelectedAccFiles,
+    setSelectedAccId
+} = accSlice.actions
 export default accSlice.reducer

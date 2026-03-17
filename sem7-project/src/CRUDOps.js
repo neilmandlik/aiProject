@@ -109,3 +109,45 @@ export const postData = async (route, body) => {
     throw error;
   }
 };
+
+
+export const putData = async (route, body) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${route}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    // If backend unreachable
+    if (!response) {
+      throw new Error("NO_RESPONSE");
+    }
+
+    const data = await response.json();
+
+    // Handle non-2xx responses
+    if (!response.ok) {
+      const err = new Error(data?.message || "Server error");
+      err.status = response.status;
+      err.userMessage =
+        "Something went wrong while updating the data. Please try again.";
+      throw err;
+    }
+
+    return data;
+
+  } catch (error) {
+    if (error.name === "TypeError") {
+      // "Failed to fetch"
+      error.userMessage =
+        "Cannot connect to the server right now. Please check your network.";
+    }
+    throw error;
+  }
+};

@@ -20,9 +20,9 @@ function App() {
         <Route path='syllabus-pdf' element={<SyllabusPDFs />} loader={syllabusLoader}/>
         <Route path='performance-summary/:id' element={<PerformanceSummary />} loader={performanceSummaryLoader} />
         <Route path='performance-history' element={<PerformanceHistory />} loader={performanceLoader}/>
-        <Route path='rubrics/:id' element={<Rubrics />} loader={rubricLoader} />
         <Route path='error' element={<Error />} loader={errorLoader}/>
       </Route>
+      <Route path='rubrics/:id' element={<Rubrics />} loader={rubricLoader} />
       <Route path='/add-file' element={<AddFile />} />
     </>
   ))

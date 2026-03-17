@@ -27,3 +27,11 @@ export const generatePerformanceDataService = async(postDataObj) => {
 export const getPerformanceReviewService = async(perId) => {
     return await getData(`get-review/${perId}`)
 }
+
+export const getRubricsService = async(accId) => {
+    return await getData(`rubrics/${accId}`)
+}
+
+export const saveRubricsService = async(accId) => {
+    
+}
