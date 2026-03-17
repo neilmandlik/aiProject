@@ -15,7 +15,7 @@ const initialState = {
 
     currentAccBody: '',
     selectedAccFiles: [],
-    rubrics: [],
+    rubricData: null,
     selectedAccId: 0
 }
 

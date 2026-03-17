@@ -35,12 +35,15 @@ export const handleGetRubricsExtraReducers = (builder,getThunk) =>{
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
-        state.rubrics = action.payload.map(ele=>({
-            accRubTitle: ele.accRubTitle,
-            accRubDescription: ele.accRubDescription,
-            accRubId: ele.accRubId,
-            accId: ele.accId
-        }))
+        state.rubricData = {
+            usedInEvaluation: action.payload.usedInEvaluation,
+            rubrics: action.payload.rubrics.map(ele=>({
+                accRubTitle: ele.accRubTitle,
+                accRubDescription: ele.accRubDescription,
+                accRubId: ele.accRubId,
+                accId: ele.accId
+            }))
+        }
         state.isLoadingRubrics = false
         state.errMsg = ""
     })

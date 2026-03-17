@@ -19,7 +19,7 @@ function Rubrics () {
 
     const {register, control, handleSubmit, reset} = useForm({
         defaultValues: {
-            rubrics: accSlice.rubrics
+            rubrics: accSlice.rubricData?.rubrics
         }
     })
 
@@ -29,7 +29,7 @@ function Rubrics () {
     })
 
     useEffect(()=>{
-        reset({rubrics: accSlice.rubrics})
+        reset({rubrics: accSlice.rubricData?.rubrics})
     },[accSlice.isLoadingRubrics])
 
     const handleEditClick = () => {
@@ -138,7 +138,7 @@ function Rubrics () {
 
                         </form>
                         :
-                        accSlice.rubrics.map(rubric => (                            
+                        accSlice.rubricData?.rubrics?.map(rubric => (                            
                             <div
                                 key={rubric.accRubId}
                                 className="bg-white shadow-sm border rounded-lg p-5 flex justify-between items-start"
