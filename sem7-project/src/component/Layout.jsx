@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { ArrowLeft, UserCircle2 } from "lucide-react";
 import { setProgressStep } from "../store/progress/progressSlice";
 import { button, loader } from "./ApplicationCSS";
-import { setSelectedAccFiles } from "../store/accreditation/accSlice";
-import { generatePerformanceThunk } from "../store/performance/performanceSlice";
+import { setFileNames, setSelectedAccFiles } from "../store/accreditation/accSlice";
+import { generatePerformanceThunk, setIsGenerateResponseLoading, setSuccessdata } from "../store/performance/performanceSlice";
 import { navObj, progressStep } from "./enums/SyllabusEvaluatorEnum";
+import { setSelectedSyllabusFile } from "../store/syllabus/syllabusSlice";
 function Layout(){
 
     
@@ -39,8 +40,8 @@ function Layout(){
                 dispatch(setProgressStep(progressSlice.step+1))
             }
             if(progressSlice.step===2){
+                dispatch(setIsGenerateResponseLoading(true))
                 dispatch(generatePerformanceThunk()).unwrap().catch(()=>{
-                    console.log("Hello")
                     navigate('/error')
                 })
             }
@@ -51,7 +52,14 @@ function Layout(){
     }
 
     const handleOnNewSummaryClick = () => {
-        navigate(`/${navObj[progressStep.Accreditation].to}`)
+        dispatch(setSuccessdata({}))
+        dispatch(setProgressStep(progressStep.Accreditation))
+        if(progressSlice.step == progressStep.Review && performanceSlice.successData?.isReviewGenerated){
+            const fileNames = accSlice.fileNames.map(ele=>({...ele,isChecked: false}))
+            dispatch(setFileNames(fileNames))
+            dispatch(setSelectedAccFiles())
+            dispatch(setSelectedSyllabusFile(0))
+        }
     }
 
     return (

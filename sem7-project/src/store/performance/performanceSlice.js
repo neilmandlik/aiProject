@@ -26,7 +26,13 @@ const performanceSlice = createSlice({
         },
         setSelectedId: (state,action) => {
             state.selectedId = action.payload
-        }
+        },
+        setIsGenerateResponseLoading: (state,action) => {
+            state.isGenerateResponseLoading = action.payload
+        },
+        setSuccessdata: (state,action) => {
+            state.successData = action.payload
+        },
     },
     extraReducers: (builder) => {
         handlePerformanceExtraReducers(builder, getPerformanceThunk);
@@ -35,5 +41,10 @@ const performanceSlice = createSlice({
     }
 })
 
-export const { toggleReviewVisibility, setSelectedId } = performanceSlice.actions
+export const { 
+    toggleReviewVisibility, 
+    setSelectedId, 
+    setIsGenerateResponseLoading,
+    setSuccessdata
+} = performanceSlice.actions
 export default performanceSlice.reducer

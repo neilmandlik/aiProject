@@ -1,10 +1,12 @@
 import { Pencil, ArrowLeft, Edit2Icon, Save, X } from 'lucide-react'
-import { getGetRubricsThunk, setSelectedAccId } from '../store/accreditation/accSlice'
-import { useSelector } from 'react-redux'
+import { addRubricsThunk, getGetRubricsThunk, saveRubricsThunk, setRubricData, setSelectedAccId } from '../store/accreditation/accSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import store from '../store/store'
 import { button, loader, subtext } from '../component/ApplicationCSS'
 import { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { navObj, progressStep } from '../component/enums/SyllabusEvaluatorEnum'
 
 export const rubricLoader = ({params}) => {
     const { id } = params
@@ -16,8 +18,11 @@ function Rubrics () {
 
     const [isInEditMode, setIsInEditMode] = useState(false)
     const accSlice = useSelector(state=>state.accreditation)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const {register, control, handleSubmit, reset} = useForm({
+
+    const {register, control, handleSubmit, reset, setValue, getValues} = useForm({
         defaultValues: {
             rubrics: accSlice.rubricData?.rubrics
         }
@@ -37,13 +42,31 @@ function Rubrics () {
     }
 
     const handleFormSubmit = (data) => {
-        console.log(data.rubrics)
+        setIsInEditMode(false)
+        dispatch(setRubricData(data.rubrics))
+        if(accSlice.rubricData.usedInEvaluation){
+            dispatch(addRubricsThunk())
+        }
+        else{
+            dispatch(saveRubricsThunk())
+        }
+    }
+
+    const handleGoBackClick = () => {
+        navigate(`/${navObj[progressStep.Accreditation].to}`)
+    }
+
+    const handleDetailsChange = (index) => {
+        if (getValues(`rubrics.${index}.hasChanged`)) return
+        setValue(`rubrics.${index}.hasChanged`, true, {
+            shouldDirty: true
+        })       
     }
 
     return (
         <>
             {
-            accSlice.isLoadingRubrics
+            accSlice.isLoadingRubrics || accSlice.isSavingRubrics
             ?
             <div className="flex justify-center pt-40">
                 <div className={`${loader}`}></div>
@@ -53,7 +76,7 @@ function Rubrics () {
 
                 {/* Header */}
 
-                <button className={`${button}`}>
+                <button onClick={handleGoBackClick} className={`${button}`}>
                     <div className="flex gap-3 items-center">
                         <ArrowLeft />
                         Go Back
@@ -116,13 +139,13 @@ function Rubrics () {
 
                                         <input
                                         className="w-full border rounded p-3 my-2"
-                                        {...register(`rubrics.${index}.accRubTitle`, {required: true})}
+                                        {...register(`rubrics.${index}.accRubTitle`, {required: true, onChange: () => handleDetailsChange(index)})}
                                         />
 
                                         <textarea
                                         className="w-full border rounded p-4 my-2"
                                         rows={3}
-                                        {...register(`rubrics.${index}.accRubDescription`, {required: true})}
+                                        {...register(`rubrics.${index}.accRubDescription`, {required: true, onChange: () => handleDetailsChange(index)})}
                                         />
 
                                         {/* <input

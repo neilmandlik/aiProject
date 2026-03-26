@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { progressStep } from "../../component/enums/SyllabusEvaluatorEnum"
 
 const initialState = {
     step: 1,
     maxProgressSteps: 3,
-    maxSteps: 5,
+    maxSteps: Object.keys(progressStep).length,
     minSteps: 1
 }
 

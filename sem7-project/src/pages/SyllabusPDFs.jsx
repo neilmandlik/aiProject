@@ -3,7 +3,7 @@ import { getSyllabusFileNameThunk, setSelectedSyllabusFile } from "../store/syll
 import store from "../store/store"
 import { Plus, Eye, Trash2, MoreHorizontal } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { loader } from "../component/ApplicationCSS"
 
 export const syllabusLoader = () => {
     store.dispatch(getSyllabusFileNameThunk())
@@ -12,6 +12,7 @@ export const syllabusLoader = () => {
 function SyllabusPDFs() {
 
     const syllabusSlice = useSelector((state)=>state.syllabus)
+    const performanceSlice = useSelector(state => state.performance)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -25,6 +26,13 @@ function SyllabusPDFs() {
 
     return(
         <>
+        {
+            performanceSlice.isGenerateResponseLoading
+            ?
+            <div className="flex justify-center pt-40">
+                <div className={`${loader}`}></div>
+            </div>
+            :
             <div className="flex flex-col gap-4 p-2">
                 <div className='flex justify-end'>
                     <button 
@@ -81,6 +89,7 @@ function SyllabusPDFs() {
                 )}
                 
             </div>
+        }
         </>
     )
 

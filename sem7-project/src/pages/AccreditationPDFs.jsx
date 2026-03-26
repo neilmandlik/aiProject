@@ -23,10 +23,6 @@ function AccrediatationPDFs(){
     const accreditationSlice = useSelector((state)=>state.accreditation)
     const navigate = useNavigate()
 
-    useEffect(()=>{
-                       
-    },[])
-
     const handleAddAccreditationFile = () => {
         navigate('/add-file')        
     }

@@ -1,12 +1,31 @@
-import { getData, postData, postFile } from '../CRUDOps';
+import { getData, postData, postFile, putData } from '../CRUDOps';
+
+
+//Accreditation Services
 
 export const accrediationFileDataService = async() => {
     return await getData(`accreditation-file-names`)
 }
+export const getRubricsService = async(accId) => {
+    return await getData(`rubrics/${accId}`)
+}
+
+export const saveRubricsService = async(accId, rubrics) => {
+    return await putData(`rubrics/${accId}`, rubrics)    
+}
+
+export const addRubricsService = async(accId, rubrics) => {
+    return await postData(`rubrics/${accId}`, rubrics)
+}
+
+//File Services
 
 export const postFileDataService = async(file, accBodyName, step) => {
     return await postFile(`file-upload?file-type=${step===1?"accreditation":"syllabus"}`, file, {accBodyName})
 }
+
+
+//Performance Services
 
 export const performanceHistoryService = async() => {
     return await getData('performance-review-names')
@@ -14,10 +33,6 @@ export const performanceHistoryService = async() => {
 
 export const performanceDataService = async() => {
     return await getData(`review-report`)
-}
-
-export const syllabusFileNamesService = async() => {
-    return await getData(`syllabus-file-name`)
 }
 
 export const generatePerformanceDataService = async(postDataObj) => {
@@ -28,10 +43,9 @@ export const getPerformanceReviewService = async(perId) => {
     return await getData(`get-review/${perId}`)
 }
 
-export const getRubricsService = async(accId) => {
-    return await getData(`rubrics/${accId}`)
+
+// Syllabus Services
+export const syllabusFileNamesService = async() => {
+    return await getData(`syllabus-file-name`)
 }
 
-export const saveRubricsService = async(accId) => {
-    
-}

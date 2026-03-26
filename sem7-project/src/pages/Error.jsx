@@ -30,7 +30,7 @@ function Error() {
                         <div className="flex justify-center mb-6">
                         <div className="bg-red-50 rounded-full p-4">
                             <svg className="w-10 h-10 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
                                 d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                             </svg>
                         </div>

@@ -1,4 +1,5 @@
-import { accrediationFileDataService, getRubricsService } from "../../services/allServices"
+import { accrediationFileDataService, addRubricsService, getRubricsService, saveRubricsService } from "../../services/allServices"
+import { getGetRubricsThunk } from "./accSlice"
 
 export const getAccrediationFileData = async() => {
     return await accrediationFileDataService()
@@ -7,6 +8,18 @@ export const getAccrediationFileData = async() => {
 export const getRubrics = async(thunkAPI) => {
     const accId = thunkAPI.getState().accreditation.selectedAccId
     return await getRubricsService(accId)
+}
+
+export const saveRubrics = async(thunkAPI) => {
+    const rubrics = thunkAPI.getState().accreditation.rubricData.rubrics
+    const accId = thunkAPI.getState().accreditation.selectedAccId
+    return await saveRubricsService(accId, rubrics)
+}
+
+export const addRubrics = async(thunkAPI) => {
+    const rubrics = thunkAPI.getState().accreditation.rubricData.rubrics
+    const accId = thunkAPI.getState().accreditation.selectedAccId
+    return await addRubricsService(accId, rubrics)
 }
 
 export const handleAccrediationExtraReducers = (builder,getThunk) =>{
@@ -28,6 +41,7 @@ export const handleAccrediationExtraReducers = (builder,getThunk) =>{
         state.loading = false
     })
 }
+
 export const handleGetRubricsExtraReducers = (builder,getThunk) =>{
     builder
     .addCase(getThunk.pending ,(state)=>{
@@ -41,7 +55,9 @@ export const handleGetRubricsExtraReducers = (builder,getThunk) =>{
                 accRubTitle: ele.accRubTitle,
                 accRubDescription: ele.accRubDescription,
                 accRubId: ele.accRubId,
-                accId: ele.accId
+                accId: ele.accId,
+                status: ele.accActiveStatus,
+                hasChanged: false
             }))
         }
         state.isLoadingRubrics = false
@@ -52,3 +68,39 @@ export const handleGetRubricsExtraReducers = (builder,getThunk) =>{
         state.isLoadingRubrics = false
     })
 }
+
+export const handleSaveRubricsExtraReducers = (builder, getThunk) => {
+    builder
+    .addCase(getThunk.pending ,(state)=>{
+        state.isSavingRubrics = true
+        state.errMsg = ""
+    })
+    .addCase(getThunk.fulfilled ,(state,action)=>{
+        state.isSavingRubrics = false
+        getGetRubricsThunk()
+    })
+    .addCase(getThunk.rejected ,(state,action)=>{
+        state.errMsg = action.error.message
+        state.isSavingRubrics = false
+    })
+
+}
+
+export const handleAddRubricsExtraReducers = (builder, getThunk) => {
+    builder
+    .addCase(getThunk.pending ,(state)=>{
+        state.isSavingRubrics = true
+        state.errMsg = ""
+    })
+    .addCase(getThunk.fulfilled ,(state,action)=>{
+        state.isSavingRubrics = false
+        state.errMsg = ""
+        getGetRubricsThunk()
+    })
+    .addCase(getThunk.rejected ,(state,action)=>{
+        state.errMsg = action.error.message
+        state.isSavingRubrics = false
+    })
+
+}
+
