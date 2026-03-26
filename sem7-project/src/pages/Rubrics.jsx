@@ -1,4 +1,4 @@
-import { Pencil, ArrowLeft, Edit2Icon, Save, X } from 'lucide-react'
+import { Pencil, ArrowLeft, Edit2Icon, Save, X, Trash2, RotateCcw  } from 'lucide-react'
 import { addRubricsThunk, getGetRubricsThunk, saveRubricsThunk, setRubricData, setSelectedAccId } from '../store/accreditation/accSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import store from '../store/store'
@@ -17,6 +17,7 @@ export const rubricLoader = ({params}) => {
 function Rubrics () {
 
     const [isInEditMode, setIsInEditMode] = useState(false)
+    const [statusChanged, setStatusChanged] = useState(false)
     const accSlice = useSelector(state=>state.accreditation)
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -34,6 +35,12 @@ function Rubrics () {
     })
 
     useEffect(()=>{
+        if(statusChanged){
+            setStatusChanged(false)
+        }
+    },[statusChanged])
+
+    useEffect(()=>{
         reset({rubrics: accSlice.rubricData?.rubrics})
     },[accSlice.isLoadingRubrics])
 
@@ -41,15 +48,17 @@ function Rubrics () {
         setIsInEditMode(!isInEditMode)
     }
 
-    const handleFormSubmit = (data) => {
+    const handleFormSubmit = async(data) => {
         setIsInEditMode(false)
         dispatch(setRubricData(data.rubrics))
         if(accSlice.rubricData.usedInEvaluation){
-            dispatch(addRubricsThunk())
+            await dispatch(addRubricsThunk()).unwrap()
         }
         else{
-            dispatch(saveRubricsThunk())
+            await dispatch(saveRubricsThunk()).unwrap()
         }
+
+        dispatch(getGetRubricsThunk())
     }
 
     const handleGoBackClick = () => {
@@ -61,6 +70,13 @@ function Rubrics () {
         setValue(`rubrics.${index}.hasChanged`, true, {
             shouldDirty: true
         })       
+    }
+
+    const handleStatusChangeClick = (index, status) => {
+        setValue(`rubrics.${index}.status`, status, {
+            shouldDirty: true
+        })
+        setStatusChanged(true)
     }
 
     return (
@@ -135,25 +151,54 @@ function Rubrics () {
 
                                 fields.map((field, index) => (
 
-                                    <div className="my-[2rem] border">
+                                    <div key={index} className={`my-[2rem] border rounded-lg p-4 transition
+                                                                    ${getValues(`rubrics.${index}.status`) === 3
+                                                                        ? "bg-red-50 border-red-300 opacity-60"
+                                                                        : "bg-white"}
+                                                                `}>
 
-                                        <input
-                                        className="w-full border rounded p-3 my-2"
-                                        {...register(`rubrics.${index}.accRubTitle`, {required: true, onChange: () => handleDetailsChange(index)})}
-                                        />
+                                        <div className="flex items-center gap-2">
+
+                                            <input
+                                                disabled={getValues(`rubrics.${index}.status`) === 3}
+                                                className="w-full border rounded p-3 my-2 disabled:bg-gray-100"
+                                                {...register(`rubrics.${index}.accRubTitle`, {
+                                                    required: true,
+                                                    onChange: () => handleDetailsChange(index)
+                                                })}
+                                                />
+
+                                            {
+                                                getValues(`rubrics.${index}.status`) === 3
+                                                ?
+                                                <button
+                                                type="button"
+                                                onClick={()=>handleStatusChangeClick(index,1)}                                                    
+                                                    className="text-green-600 hover:text-green-800 p-2 rounded hover:bg-green-50"
+                                                    >
+                                                    <RotateCcw size={18}/>
+                                                </button>
+                                                :
+                                                <button
+                                                type="button"
+                                                onClick={() => handleStatusChangeClick(index,3)}
+                                                className="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50"
+                                                >
+                                                    <Trash2 size={18}/>
+                                                </button>
+                                            }
+
+                                        </div>
 
                                         <textarea
-                                        className="w-full border rounded p-4 my-2"
-                                        rows={3}
-                                        {...register(`rubrics.${index}.accRubDescription`, {required: true, onChange: () => handleDetailsChange(index)})}
+                                            disabled={getValues(`rubrics.${index}.status`) === 3}
+                                            className="w-full border rounded p-4 my-2"
+                                            rows={3}
+                                            {...register(`rubrics.${index}.accRubDescription`, {
+                                                required: true,
+                                                onChange: () => handleDetailsChange(index)
+                                            })}
                                         />
-
-                                        {/* <input
-                                        className='my-2'
-                                        type="range"
-                                        min="1"
-                                        max="10"
-                                        /> */}
 
                                     </div>
                                 ))
