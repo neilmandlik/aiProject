@@ -12,14 +12,16 @@ export const getRubrics = async(thunkAPI) => {
 
 export const saveRubrics = async(thunkAPI) => {
     const rubrics = thunkAPI.getState().accreditation.rubricData.rubrics
+    const tranformedRubrics = mapRubricDataToPayload(rubrics)
     const accId = thunkAPI.getState().accreditation.selectedAccId
-    return await saveRubricsService(accId, rubrics)
+    return await saveRubricsService(accId, tranformedRubrics)
 }
 
 export const addRubrics = async(thunkAPI) => {
     const rubrics = thunkAPI.getState().accreditation.rubricData.rubrics
+    const tranformedRubrics = mapRubricDataToPayload(rubrics)
     const accId = thunkAPI.getState().accreditation.selectedAccId
-    return await addRubricsService(accId, rubrics)
+    return await addRubricsService(accId, tranformedRubrics)
 }
 
 export const handleAccrediationExtraReducers = (builder,getThunk) =>{
@@ -86,7 +88,7 @@ export const handleSaveRubricsExtraReducers = (builder, getThunk) => {
 
 }
 
-export const handleAddRubricsExtraReducers = (builder, getThunk) => {
+export const handleAddRubricsExtraReducers = (builder, getThunk, thunkAPI) => {
     builder
     .addCase(getThunk.pending ,(state)=>{
         state.isSavingRubrics = true
@@ -95,7 +97,6 @@ export const handleAddRubricsExtraReducers = (builder, getThunk) => {
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.isSavingRubrics = false
         state.errMsg = ""
-        getGetRubricsThunk()
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message
@@ -104,3 +105,14 @@ export const handleAddRubricsExtraReducers = (builder, getThunk) => {
 
 }
 
+
+export const mapRubricDataToPayload = (rubrics) => {
+    return rubrics.map(ele=>({
+        rubric: ele.accRubTitle,
+        description: ele.accRubDescription,
+        status: ele.status,
+        hasChanged: ele.hasChanged,
+        accRubId: ele.accRubId,
+        accId: ele.accId
+    }))
+}
