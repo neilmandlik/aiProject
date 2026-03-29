@@ -1,4 +1,4 @@
-import { accrediationFileDataService, addRubricsService, getRubricsService, saveRubricsService } from "../../services/allServices"
+import { accrediationFileDataService, addRubricsService, generateRubricsService, getRubricsService, saveRubricsService } from "../../services/allServices"
 import { getGetRubricsThunk } from "./accSlice"
 
 export const getAccrediationFileData = async() => {
@@ -22,6 +22,11 @@ export const addRubrics = async(thunkAPI) => {
     const tranformedRubrics = mapRubricDataToPayload(rubrics)
     const accId = thunkAPI.getState().accreditation.selectedAccId
     return await addRubricsService(accId, tranformedRubrics)
+}
+
+export const generateRubrics = async(thunkAPI) => {
+    const accId = thunkAPI.getState().accreditation.selectedAccId
+    return await generateRubricsService(accId)
 }
 
 export const handleAccrediationExtraReducers = (builder,getThunk) =>{
@@ -79,7 +84,6 @@ export const handleSaveRubricsExtraReducers = (builder, getThunk) => {
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.isSavingRubrics = false
-        getGetRubricsThunk()
     })
     .addCase(getThunk.rejected ,(state,action)=>{
         state.errMsg = action.error.message

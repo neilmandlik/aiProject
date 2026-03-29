@@ -8,6 +8,7 @@ import {
     handleSaveRubricsExtraReducers,
     handleAddRubricsExtraReducers,
     saveRubrics,
+    generateRubrics,
 } from "./accSlice.helper"
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
     errMsg: '',
 
     currentAccBody: '',
+    currentCollection: '',
     selectedAccFiles: [],
     rubricData: null,
     selectedAccId: 0
@@ -29,6 +31,7 @@ export const getAccrediationThunk = createAsyncThunk("api/getAccreditationFiles"
 export const getGetRubricsThunk = createAsyncThunk("api/getRubrics", (_,thunkAPI) => getRubrics(thunkAPI))
 export const saveRubricsThunk = createAsyncThunk("api/saveRubrics", (_,thunkAPI) => saveRubrics(thunkAPI))
 export const addRubricsThunk = createAsyncThunk("api/addRubrics", (_,thunkAPI) => addRubrics(thunkAPI))
+export const generateRubricsThunk = createAsyncThunk("api/generateRubrics", (_,thunkAPI) => generateRubrics(thunkAPI))
 
 const accSlice = createSlice({
     name: "accreditation",
@@ -52,6 +55,9 @@ const accSlice = createSlice({
         },
         setFileNames: (state,action) => {
             state.fileNames = action.payload.map(ele=>ele)
+        },
+        setCurrentCollectionName: (state, action) => {
+            state.currentCollection = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -59,6 +65,7 @@ const accSlice = createSlice({
         handleGetRubricsExtraReducers(builder, getGetRubricsThunk)
         handleSaveRubricsExtraReducers(builder, saveRubricsThunk)
         handleAddRubricsExtraReducers(builder, addRubricsThunk)
+        handleGetRubricsExtraReducers(builder, generateRubricsThunk)
     }
 })
 
@@ -69,6 +76,7 @@ export const {
     setSelectedAccFiles,
     setSelectedAccId,
     setRubricData,
-    setFileNames
+    setFileNames,
+    setCurrentCollectionName
 } = accSlice.actions
 export default accSlice.reducer

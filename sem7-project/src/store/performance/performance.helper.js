@@ -50,7 +50,7 @@ export const handleGenerateReviewExtraReducers = (builder, getThunk) => {
     .addCase(getThunk.fulfilled ,(state,action)=>{
         state.successData = {...action.payload}
         if(!state.successData.performanceId){
-            state.successData.isReviewGenerated = false
+            state.successData.success = false
         }
         else{
             state.selectedId = state.successData.performanceId

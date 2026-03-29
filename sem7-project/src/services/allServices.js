@@ -18,10 +18,14 @@ export const addRubricsService = async(accId, rubrics) => {
     return await postData(`rubrics/${accId}`, rubrics)
 }
 
+export const generateRubricsService = async(accId) => {
+    return await getData(`generate-rubrics/${accId}`)
+}
+
 //File Services
 
-export const postFileDataService = async(file, accBodyName, step) => {
-    return await postFile(`file-upload?file-type=${step===1?"accreditation":"syllabus"}`, file, {accBodyName})
+export const postFileDataService = async(file, accBodyName, collectionName, step) => {
+    return await postFile(`file-upload?file-type=${step===1?"accreditation":"syllabus"}`, file, {accBodyName, collectionName})
 }
 
 
