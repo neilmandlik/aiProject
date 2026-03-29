@@ -28,7 +28,7 @@ function Layout(){
     },[progressSlice.step])
 
     useEffect(()=>{
-        if(!performanceSlice.isGenerateResponseLoading && performanceSlice.successData?.isReviewGenerated){
+        if(!performanceSlice.isGenerateResponseLoading && performanceSlice.successData?.success){
             dispatch(setProgressStep(progressStep.Review))
         }
     },[performanceSlice.isGenerateResponseLoading])
@@ -54,7 +54,7 @@ function Layout(){
     const handleOnNewSummaryClick = () => {
         dispatch(setSuccessdata({}))
         dispatch(setProgressStep(progressStep.Accreditation))
-        if(progressSlice.step == progressStep.Review && performanceSlice.successData?.isReviewGenerated){
+        if(progressSlice.step == progressStep.Review && performanceSlice.successData?.success){
             const fileNames = accSlice.fileNames.map(ele=>({...ele,isChecked: false}))
             dispatch(setFileNames(fileNames))
             dispatch(setSelectedAccFiles())
