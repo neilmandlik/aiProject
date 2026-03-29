@@ -3,8 +3,9 @@ import { postFileDataService } from "../../services/allServices"
 export const postFile = async(file,thunkAPI) => {
     const state = thunkAPI.getState()
     const accBodyName = state.accreditation.currentAccBody
+    const collectionName = state.accreditation.currentCollection
     const step = state.progress.step
-    return await postFileDataService(file, accBodyName, step)
+    return await postFileDataService(file, accBodyName, collectionName, step)
 }
 
 export const handleFileExtraReducers = (builder,getThunk) =>{
@@ -14,6 +15,7 @@ export const handleFileExtraReducers = (builder,getThunk) =>{
         state.errMsg = ""
     })
     .addCase(getThunk.fulfilled ,(state,action)=>{
+        state.data = action.payload
         state.loading = false
         state.errMsg = ""
     })
