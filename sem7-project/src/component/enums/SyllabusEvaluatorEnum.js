@@ -38,3 +38,8 @@ export const navObj = Object.freeze({
         to: "rubrics",
     },
 })
+
+export const StatusEnum = Object.freeze({
+    "Active": 1,
+    "Inactive": 3
+})

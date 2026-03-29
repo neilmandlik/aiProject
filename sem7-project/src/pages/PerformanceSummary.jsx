@@ -77,7 +77,7 @@ function PerformanceSummary(){
                                 <div key={`${index}`}>
                                     <div className={`${accHeader}`}>
                                         <p className={`${accBodyName}`}>{accDetails[ele].accBodyName}</p>
-                                        <p className={`${accFileName}`}>{accDetails[ele].accFileName}</p>
+                                        <p className={`${accFileName}`}>{accDetails[ele].accCollectionName}</p>
                                     </div>
                                     <div className={`${rubricList}`}>                                        
                                         {accDetails[ele].performanceDetails.map((det,i)=>(
